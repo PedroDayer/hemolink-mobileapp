@@ -1,6 +1,7 @@
 export type ParametrosRotasStack = {
   StackLogin: undefined;
   StackHome: undefined;
+  StackCadastro: undefined;
 };
 
 export type ParametrosRotasTabs = {
