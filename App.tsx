@@ -8,6 +8,7 @@ import 'react-native-gesture-handler';
 import { useEffect } from "react";
 import { signInRequest } from "./src/services/auth";
 import { AuthProvider, useAuth } from "./src/contexts/AuthContext";
+import Toast from "react-native-toast-message";
 
 
 export default function App() {
@@ -43,6 +44,10 @@ export default function App() {
       </NavigationContainer>
     </AuthProvider>
 
+    <NavigationContainer>
+      <Routers />
+      <Toast />
+    </NavigationContainer>
     // </ThemeProvider>
   );
 }
