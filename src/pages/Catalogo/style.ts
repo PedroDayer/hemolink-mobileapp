@@ -45,9 +45,5 @@ export const styles = StyleSheet.create({
   containerCard: {
     padding: "5%",
     paddingTop: 20,
-
-    // teste
-    borderWidth: 2,
-    borderColor: "red",
   },
 });
