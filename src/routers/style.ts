@@ -4,10 +4,16 @@ export const styles = StyleSheet.create({
   cardTabs: {
     width: 80,
     alignItems: "center",
-    marginTop: 10,
+    marginTop: 30,
+    height: 50,
+    borderRadius: 8,
+    justifyContent: "center",
   },
 
   textTabs: {
-    fontSize: 11,
+    marginTop: 2,
+    fontSize: 12,
+    fontWeight: 500,
+    color: "#5C5F60",
   },
 });

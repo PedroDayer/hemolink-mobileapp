@@ -5,8 +5,8 @@ import {
   DrawerItemList,
 } from "@react-navigation/drawer";
 import { TabsRouters } from "./tabs";
-import { Text, View } from "react-native";
-import { Feather } from "@expo/vector-icons";
+import { Text, TouchableOpacity, View } from "react-native";
+import { Feather, MaterialIcons } from "@expo/vector-icons";
 import { Perfil } from "./pagesTestes/Perfil";
 import { Teste } from "./pagesTestes/Teste";
 import { ParametrosRotasDrawer } from "./navigation";
@@ -29,7 +29,21 @@ const CustimizacaoDrower = (props: DrawerContentComponentProps) => {
 export const DrawerRouters = () => {
   return (
     <Drawer.Navigator
-      screenOptions={{ title: "" }}
+      screenOptions={() => ({
+        headerShown: false,
+        // headerStyle: {
+        //   borderBottomWidth: 1,
+        //   borderBottomColor: "#E5BDBB",
+        // },
+        // headerLeft: () => (
+        //   <TouchableOpacity
+        //     onPress={() => navigation.openDrawer()}
+        //     style={{ marginLeft: 15 }}
+        //   >
+        //     <MaterialIcons name="menu" size={28} color="#9E001F" />
+        //   </TouchableOpacity>
+        // ),
+      })}
       drawerContent={(props) => <CustimizacaoDrower {...props} />}
     >
       <Drawer.Screen
@@ -40,6 +54,7 @@ export const DrawerRouters = () => {
             <Feather name="home" color={color} size={size} />
           ),
           drawerLabel: "Início",
+          title: "",
         }}
       />
       <Drawer.Screen
@@ -50,6 +65,7 @@ export const DrawerRouters = () => {
             <Feather name="user" color={color} size={size} />
           ),
           drawerLabel: "Perfil",
+          title: "Perfil",
         }}
       />
       <Drawer.Screen
@@ -60,6 +76,7 @@ export const DrawerRouters = () => {
             <Feather name="home" color={color} size={size} />
           ),
           drawerLabel: "Teste",
+          title: "Teste",
         }}
       />
     </Drawer.Navigator>
