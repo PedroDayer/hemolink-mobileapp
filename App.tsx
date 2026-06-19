@@ -4,19 +4,35 @@ import { ThemeProvider } from "styled-components/native";
 import { theme } from "./src/theme";
 import { Routers } from "./src/routers";
 import { NavigationContainer } from "@react-navigation/native";
-import 'react-native-gesture-handler';
+import "react-native-gesture-handler";
 import { useEffect } from "react";
 import { signInRequest } from "./src/services/auth";
+import Toast from "react-native-toast-message";
+import { AuthProvider, useAuth } from "./src/contexts/AuthContext";
+import { Perfil } from "./src/routers/pagesTestes/Perfil";
 
+//teste perfil abrir camera e escolher da galeria
+//export default function App() {
+//  return <Perfil />;
+//}
 
 export default function App() {
+  //Teste contexto+STORAGE
+  function TesteDoLogin() {
+    const { signIn, user, loading } = useAuth();
 
-  //===== APAGAR após teste
-  useEffect(() => {
-    signInRequest({ email: 'teste@teste.com', senha: 'teste123' })
-      .then(u => console.log('Deu bom', u))
-      .catch(e => console.log('deu ruim:', e.message))
-  }, [])
+    useEffect(() => {
+      console.log("Iniciando Login do usuario");
+      signIn({ email: "jojo@teste.com", senha: "123123" }).catch((e) =>
+        console.log("Deu Ruim: ", e.message),
+      );
+    }, []);
+    useEffect(() => {
+      console.log("o usuario logado é : ", user);
+    });
+
+    return null;
+  }
 
   return (
     // <View style={styles.container}>
@@ -25,10 +41,14 @@ export default function App() {
     // </View>
 
     <ThemeProvider theme={theme}>
-    <NavigationContainer>
-      <Routers />
-    </NavigationContainer>
-    // </ThemeProvider>
+      <AuthProvider>
+        <NavigationContainer>
+          <Routers />
+          <TesteDoLogin />
+          <Toast />
+        </NavigationContainer>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 
