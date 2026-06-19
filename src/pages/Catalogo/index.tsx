@@ -14,6 +14,8 @@ import { Hospital, listarHospitais } from "../../services/HospitalService";
 import { Loading } from "../../components/loading";
 import { EmptyState } from "../../components/EmptyState";
 import { CardBaseCatalogo } from "../../components/CardBaseCatalogo";
+import { obterBloodStock } from "../../util/obterBloodStock";
+import { obterTiposSanguineosCriticos } from "../../util/obterTiposSanguineosCriticos";
 
 export const Catalogo = () => {
   const [hospitais, setHospitais] = useState<Hospital[]>([]);
@@ -99,14 +101,22 @@ export const Catalogo = () => {
                   gap: 12,
                 }}
                 keyExtractor={(item) => String(item.id)}
-                renderItem={({ item }) => (
-                  <CardBaseCatalogo
-                    source={item.image}
-                    city={item.city}
-                    state={item.state}
-                    name={item.name}
-                  />
-                )}
+                renderItem={({ item }) => {
+                  const { percentage } = obterBloodStock(item.bloodStock);
+                  const tipoCritico = obterTiposSanguineosCriticos(
+                    item.bloodStock,
+                  );
+                  return (
+                    <CardBaseCatalogo
+                      tipoCritico={tipoCritico}
+                      percentage={percentage}
+                      source={item.image}
+                      city={item.city}
+                      state={item.state}
+                      name={item.name}
+                    />
+                  );
+                }}
               />
             </View>
           </ScrollView>
