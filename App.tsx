@@ -10,6 +10,7 @@ import { signInRequest } from "./src/services/auth";
 import Toast from "react-native-toast-message";
 import { AuthProvider, useAuth } from "./src/contexts/AuthContext";
 import { Perfil } from "./src/routers/pagesTestes/Perfil";
+import { Catalogo } from "./src/pages/Catalogo";
 
 //teste perfil abrir camera e escolher da galeria
 //export default function App() {
@@ -43,7 +44,8 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <AuthProvider>
         <NavigationContainer>
-          <Routers />
+          {/* <Routers /> */}
+          <Catalogo/>
           <TesteDoLogin />
           <Toast />
         </NavigationContainer>
