@@ -39,7 +39,6 @@ export const CardBaseCatalogo = ({
   stateStyleAdd,
   cardStyleView,
 }: PropsCardBase) => {
-  
   const getStatusInfo = (percentage: number) => {
     if (percentage <= 30)
       return { color: "#DC2626", label: "Crítico", prefixo: "Urgência" };
@@ -84,22 +83,23 @@ export const CardBaseCatalogo = ({
         </View>
       </View>
 
-      <View style={styles.headerEstoque}>
-        <Text style={styles.textoEstoqueGeral}>Estoque Geral</Text>
-        <Text style={[styles.textoStatus, { color: statusColor }]}>
-          {statusLabel} ({percentage.toFixed(1)}%)
-        </Text>
-      </View>
+      <View style={{ marginHorizontal: 15, display: "flex" }}>
+        <View style={styles.headerEstoque}>
+          <Text style={styles.textoEstoqueGeral}>Estoque Geral</Text>
+          <Text style={[styles.textoStatus, { color: statusColor }]}>
+            {statusLabel} ({percentage.toFixed(1)}%)
+          </Text>
+        </View>
 
-      <View style={styles.barra}>
-        <View
-          style={[
-            styles.barrinha,
-            { width: `${percentage}%`, backgroundColor: statusColor },
-          ]}
-        />
+        <View style={styles.barra}>
+          <View
+            style={[
+              styles.barrinha,
+              { width: `${percentage}%`, backgroundColor: statusColor },
+            ]}
+          />
+        </View>
       </View>
-
       {/* {name && <Text style={[nameStyleAdd]}>{name}</Text>}
       <View style={styles.containerEndereco}>
         {city && <Text style={[cityStyleAdd]}>{city}</Text>}
