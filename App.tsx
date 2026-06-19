@@ -17,22 +17,8 @@ import { Perfil } from "./src/routers/pagesTestes/Perfil";
 //}
 
 export default function App() {
-  //Teste contexto+STORAGE
-  function TesteDoLogin() {
-    const { signIn, user, loading } = useAuth();
 
-    useEffect(() => {
-      console.log("Iniciando Login do usuario");
-      signIn({ email: "jojo@teste.com", senha: "123123" }).catch((e) =>
-        console.log("Deu Ruim: ", e.message),
-      );
-    }, []);
-    useEffect(() => {
-      console.log("o usuario logado é : ", user);
-    });
 
-    return null;
-  }
 
   return (
     // <View style={styles.container}>
@@ -44,7 +30,6 @@ export default function App() {
       <AuthProvider>
         <NavigationContainer>
           <Routers />
-          <TesteDoLogin />
           <Toast />
         </NavigationContainer>
       </AuthProvider>

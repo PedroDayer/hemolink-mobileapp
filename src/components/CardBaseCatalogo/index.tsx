@@ -34,7 +34,7 @@ export const CardBase = ({
   cardStyleView
 }: PropsCardBase) => {
   return (
-    <View style={[styles.container,cardStyleView]}>
+    <View style={[styles.container, cardStyleView]}>
       <View style={[styles.containerImagem]}>
         {source && (
           <Image
@@ -43,7 +43,7 @@ export const CardBase = ({
           />
         )}
       </View>
-        {name && <Text style={[nameStyleAdd]}>{name}</Text>}
+      {name && <Text style={[nameStyleAdd]}>{name}</Text>}
       <View style={styles.containerEndereco}>
         {city && <Text style={[cityStyleAdd]}>{city}</Text>}
         {state && <Text style={[stateStyleAdd]}>{state}</Text>}
