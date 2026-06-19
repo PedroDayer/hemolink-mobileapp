@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react'
 import { FlatList, ScrollView, Text, View, Image, TouchableOpacity } from 'react-native'
 import { useNavigation, useFocusEffect } from '@react-navigation/native'
 import { Hospital, listarHospitais } from '../../../services/HospitalService'
-import { CardBase } from '../../../components/CardBaseCatalogo'
+import { CardBaseCatalogo as CardBase } from '../../../components/CardBaseCatalogo'
 import { styles } from './style'
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import admHero from '../../../assets/imagens/admHero.webp'
