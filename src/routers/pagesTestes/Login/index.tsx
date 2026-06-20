@@ -3,6 +3,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigation } from '@react-navigation/native';
+import { TouchableOpacity, Text } from 'react-native'; 
 
 import { Input } from '../../../components/Input';
 import { AuthFormWrapper } from '../../../components/AuthFormWrapper';
@@ -10,8 +11,7 @@ import { AuthFormWrapper } from '../../../components/AuthFormWrapper';
 import Toast from 'react-native-toast-message';
 import { useAuth } from '../../../contexts/AuthContext';
 
-
-import { FontAwesome5 } from '@expo/vector-icons'; // APAGAR ANTES DA PRODUCAO
+import { FontAwesome5 } from '@expo/vector-icons';
 
 import {
   ErrorText,
@@ -22,8 +22,6 @@ import {
   SignUpText,
   SignUpBoldText
 } from './style';
-import { TouchableOpacity, View } from 'react-native';
-import { Text } from 'react-native';
 
 const loginSchema = z.object({
   email: z.string().min(1, 'O e-mail é obrigatório.').email({ message: 'Insira um e-mail válido.' }),
@@ -48,13 +46,17 @@ export function Login() {
     if (loading) return;
     try {
       setLoading(true);
+      
       await signIn({ email: data.email, senha: data.password });
-      navigation.navigate('StackHome')
+      
       Toast.show({
         type: 'success',
         text1: 'Sucesso',
-        text2: 'Bem-vindo ao HemoLink !',
+        text2: 'Bem-vindo ao HemoLink!',
       });
+
+      navigation.navigate('StackHome');
+
     } catch (error) {
       console.error(error);
       Toast.show({
@@ -68,12 +70,10 @@ export function Login() {
   }
 
   function handleNavigateToRegister() {
-    navigation.navigate('Cadastro');
+    navigation.navigate('StackCadastro');
   }
 
   return (
-
-
     <AuthFormWrapper
       title="HemoLink"
       subtitle="Conectando doadores a vidas"
@@ -82,12 +82,10 @@ export function Login() {
       onSubmit={handleSubmit(handleLogin)}
       footer={
         <SignUpContainer>
-          <SignUpText>
-            Não tem uma conta?{' '}
-            <SignUpBoldText onPress={handleNavigateToRegister}>
-              Cadastre-se
-            </SignUpBoldText>
-          </SignUpText>
+          <SignUpText>Não tem uma conta? </SignUpText>
+          <TouchableOpacity onPress={handleNavigateToRegister} activeOpacity={0.7}>
+            <SignUpBoldText>Cadastre-se</SignUpBoldText>
+          </TouchableOpacity>
         </SignUpContainer>
       }
     >
@@ -98,7 +96,7 @@ export function Login() {
           <>
             <Input
               placeholder="E-mail"
-              onChangeText={onChange}
+              onChangeText={(text) => onChange(text.toLowerCase().trim())}
               value={value || ''}
               hasError={!!errors.email}
             />
@@ -137,7 +135,5 @@ export function Login() {
         </Text>
       </TouchableOpacity>
     </AuthFormWrapper>
-
-
   );
 }

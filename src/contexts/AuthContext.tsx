@@ -1,70 +1,85 @@
 import React, { createContext, useState, useEffect, ReactNode, useContext } from 'react';
-import { SignInData, signInRequest } from '../services/auth';
-import { User } from '../services/auth'
-import * as SecureStore from 'expo-secure-store';
+import { SignInData, User } from '../services/auth';
+
+import AsyncStorage from '@react-native-async-storage/async-storage'; 
+
+import { apiAuth } from '../services/api/api'; 
 
 export interface AuthContextData {
-    user: User | null;
-    loading: boolean;
-    signIn: (data: SignInData) => Promise<void>
-    signOut: () => Promise<void>
+  user: User | null;
+  loading: boolean;
+  signIn: (data: SignInData) => Promise<void>;
+  signOut: () => Promise<void>;
 }
 
-export const AuthContext = createContext<AuthContextData>({} as AuthContextData)
+export const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
-const STORAGE_KEY = 'hemolink.user'
+const STORAGE_KEY = '@hemolink:user'; 
 
 interface AuthProviderProps {
-    children: ReactNode;
+  children: ReactNode;
 }
 
 export function AuthProvider({ children }: AuthProviderProps) {
-    const [user, setUser] = useState<User | null>(null)
-    const [loading, setLoading] = useState(true)
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        async function loadStoragedUser() {
-            try {
-                const userStoraged = await SecureStore.getItemAsync(STORAGE_KEY)
-                if (userStoraged) {
-                    const userLogged = JSON.parse(userStoraged)
-                    setUser(userLogged);
-                }
-            } catch (err) {
-                console.error('Erro ao carregar usuário do armazenamento local', err)
-            }finally{
-                setLoading(false)
-            }
+  useEffect(() => {
+    async function loadStoragedUser() {
+      try {
+        const userStoraged = await AsyncStorage.getItem(STORAGE_KEY);
+        if (userStoraged) {
+          const userLogged = JSON.parse(userStoraged);
+          setUser(userLogged);
         }
-        loadStoragedUser()
-    }, [])
-
-    //Login
-    async function signIn(data:SignInData) {
-        const loggedUser = await signInRequest(data)
-        await SecureStore.setItemAsync(STORAGE_KEY,JSON.stringify(loggedUser))
-        setUser(loggedUser)
+      } catch (err) {
+        console.error('Erro ao carregar usuário do armazenamento local', err);
+      } finally {
+        setLoading(false);
+      }
     }
-    //Logout
-    async function signOut(){
-        await SecureStore.deleteItemAsync(STORAGE_KEY)
-        setUser(null)
+    loadStoragedUser();
+  }, []);
+
+  async function signIn(data: SignInData) {
+    try {
+      // Busca a lista na rota /user correta
+      const response = await apiAuth.get('/user');
+      const listaUsuarios = response.data;
+
+      const usuarioLogado = listaUsuarios.find(
+        (u: any) => u.email === data.email && u.senha === data.senha
+      );
+
+      if (!usuarioLogado) {
+        throw new Error('E-mail ou senha incorretos.');
+      }
+
+      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(usuarioLogado));
+      setUser(usuarioLogado);
+
+    } catch (error) {
+      console.error('Erro na autenticação com MockAPI:', error);
+      throw error; 
     }
+  }
 
-    return(
-        <AuthContext.Provider value={{user,loading,signIn,signOut}}>
-            {children}
-        </AuthContext.Provider>
-    )
+  async function signOut() {
+    await AsyncStorage.removeItem(STORAGE_KEY);
+    setUser(null);
+  }
 
-
+  return (
+    <AuthContext.Provider value={{ user, loading, signIn, signOut }}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
-
-export function useAuth():AuthContextData{
-    const context = useContext(AuthContext)
-    if(!context){
-        throw new Error('useAuth deve ser usando dentro do AuthProvider')
-    }
-    return context
+export function useAuth(): AuthContextData {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth deve ser usado dentro do AuthProvider');
+  }
+  return context;
 }

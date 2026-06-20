@@ -53,6 +53,7 @@ export const EyeIcon = styled(Ionicons).attrs(() => ({
 
 export const SignUpContainer = styled.View`
   width: 100%;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   margin-top: 8px;
