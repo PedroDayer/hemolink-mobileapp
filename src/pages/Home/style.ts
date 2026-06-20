@@ -118,7 +118,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: "5%",
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: "#E5E7EB",
+    borderColor: "#EAD0CF",
   },
 
   data: {
@@ -126,6 +126,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: "5%",
     paddingVertical: "2%",
     borderRadius: 12,
+    justifyContent: "center",
   },
 
   dataMes: {
@@ -133,6 +134,7 @@ export const styles = StyleSheet.create({
     fontSize: 15,
     textAlign: "center",
     lineHeight: 16,
+    fontWeight: 500
   },
 
   dataDia: {

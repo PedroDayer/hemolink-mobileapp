@@ -1,7 +1,8 @@
-import { Button, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { Header } from "../../components/Hearder";
 import { styles } from "./style";
 import { Feather, FontAwesome } from "@expo/vector-icons";
+import { Button } from "../../components/Button";
 
 export const Home = () => {
   return (
@@ -55,16 +56,7 @@ export const Home = () => {
             <Text style={styles.subtituloData}>Terça-feira as 10:00</Text>
           </View>
           <View style={styles.containerBotao}>
-            {/* Nota: Botao temporario */}
-            <TouchableOpacity
-              style={{
-                borderColor: "pink",
-                borderWidth: 1,
-                backgroundColor: "gray",
-              }}
-            >
-              <Text>Ver Local</Text>
-            </TouchableOpacity>
+            <Button texto="Ver local" fontSizeTexto={12} paddingHorizontal={5} paddingVertical={0} onPress={() => {}} />
           </View>
         </View>
       </ScrollView>
