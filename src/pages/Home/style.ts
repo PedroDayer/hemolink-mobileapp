@@ -6,14 +6,6 @@ export const styles = StyleSheet.create({
     backgroundColor: "white",
   },
 
-  loadingContainer: {
-    display: "flex",
-    flex: 1,
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
   containerTitulo: {
     padding: "5%",
     display: "flex",
@@ -32,18 +24,10 @@ export const styles = StyleSheet.create({
     marginBottom: 5,
     fontWeight: 700,
   },
+
   subTitle: {
     color: "#5C5F60",
     fontSize: 15,
     fontWeight: 400,
-  },
-
-  containerInput: {
-    marginVertical: 15,
-  },
-
-  containerCard: {
-    padding: "5%",
-    paddingTop: 20,
   },
 });
