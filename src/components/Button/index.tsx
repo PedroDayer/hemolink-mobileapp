@@ -17,9 +17,12 @@ type ButtonProps = {
     borderWidth?: number;
     borderColor?: string;
     centerIcon?: boolean;
+    paddingVertical?: number;
+    paddingHorizontal?: number;
+    fontSizeTexto?:number;
 };
 
-export const Button = ({ texto, onPress, bg, color, width, height, borderRadius, icon, iconColor, borderWidth, borderColor, centerIcon }: ButtonProps) => {
+export const Button = ({ texto, onPress, bg, color, width, height, borderRadius, icon, iconColor, borderWidth, borderColor, centerIcon, paddingVertical, paddingHorizontal, fontSizeTexto }: ButtonProps) => {
     const soIcon = !texto && icon
     return (
         <TouchableOpacity
@@ -30,6 +33,8 @@ export const Button = ({ texto, onPress, bg, color, width, height, borderRadius,
                 height !== undefined && { height },
                 borderRadius !== undefined && { borderRadius },
                 soIcon && { paddingHorizontal: 0 },
+                paddingVertical !== undefined && { paddingVertical },
+                paddingHorizontal !== undefined && { paddingHorizontal },
                 centerIcon && { justifyContent: 'center' },
                 borderColor !== undefined && { borderWidth: borderWidth ?? 1, borderColor },
             ]}
@@ -42,7 +47,7 @@ export const Button = ({ texto, onPress, bg, color, width, height, borderRadius,
             ) : (
                 icon && <Ionicons name={icon} size={20} color={iconColor ?? color ?? styles.texto.color} />
             )}
-            {!!texto && <Text style={[styles.texto, color && { color: color }]}>{texto}</Text>}
+            {!!texto && <Text style={[styles.texto, color && { color: color }, !!fontSizeTexto && { fontSize: fontSizeTexto }]}>{texto}</Text>}
         </TouchableOpacity>
     );
 };
