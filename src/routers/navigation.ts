@@ -2,6 +2,8 @@ export type ParametrosRotasStack = {
   StackLogin: undefined;
   StackHome: undefined;
   StackCadastro: undefined;
+  StackCadastroHospital: undefined;
+  StackDetalheHospital: { id: string };
 };
 
 export type ParametrosRotasTabs = {

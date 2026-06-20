@@ -70,6 +70,7 @@ export const CardBaseCatalogo = ({
           </View>
         )}
       </View>
+      {name && <Text style={[nameStyleAdd]}>{name}</Text>}
       <View style={styles.containerConteudo}>
         {name && <Text style={styles.title}>{name}</Text>}
 
@@ -105,22 +106,6 @@ export const CardBaseCatalogo = ({
         {city && <Text style={[cityStyleAdd]}>{city}</Text>}
         {state && <Text style={[stateStyleAdd]}>{state}</Text>}
       </View>
-      <View style={styles.containerStatus}>
-        <Text style={[styles.statusText, { color: statusColor }]}>
-          {statusText}
-        </Text>
-      </View>
-      <View style={styles.track}>
-        <View
-          style={[
-            styles.bar,
-            { width: `${percentage}%`, backgroundColor: statusColor },
-          ]}
-        />
-      </View>
-      <View>
-        <Text>{tipoCritico}</Text>
-      </View> */}
     </View>
   );
 };

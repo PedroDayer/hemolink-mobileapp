@@ -28,7 +28,6 @@ export interface BloodStock {
   "O-": number;
 }
 
-
 export async function listarHospitais() {
   try {
     const response = await api.get('/hospital');
