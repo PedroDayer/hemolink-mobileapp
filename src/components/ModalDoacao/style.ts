@@ -3,7 +3,6 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
   container: {
     display: "flex",
-    justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#ffffff",
   },
@@ -18,9 +17,19 @@ export const styles = StyleSheet.create({
   modalView: {
     backgroundColor: "#ffffff",
     borderRadius: 20,
-    padding: 35,
-    width: 200,
+    padding: "5%",
+    width: "90%",
     alignItems: "center",
+    // height: "80%"
   },
 
+  modalHeader: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+    justifyContent: "space-between",
+    // borderColor: "pink",
+    // borderWidth: 2
+  },
 });

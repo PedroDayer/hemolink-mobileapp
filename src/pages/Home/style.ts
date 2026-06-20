@@ -226,6 +226,8 @@ export const styles = StyleSheet.create({
     color: "#FFFFFF",
     textAlign: "center",
     marginBottom: 10,
+    fontSize: 18,
+    fontWeight: 500,
   },
 
   subTituloApoie: {
