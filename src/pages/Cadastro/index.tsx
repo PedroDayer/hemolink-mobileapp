@@ -5,10 +5,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigation } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native';
 
-import { Input } from '../../../components/Input';
-import { AuthFormWrapper } from '../../../components/AuthFormWrapper';
+import { Input } from '../../components/Input';
+import { AuthFormWrapper } from '../../components/AuthFormWrapper';
 
-import { apiAuth } from '../../../services/api/api'; 
+import { apiAuth } from '../../services/api/api'; 
 
 import Toast from 'react-native-toast-message';
 import { 
@@ -19,7 +19,7 @@ import {
   SignInContainer,
   SignInText,
   SignInBoldText
-} from './style';
+} from './styles';
 
 const cadastroSchema = z.object({
   nome: z.string().min(1, 'O nome é obrigatório.'),
