@@ -97,7 +97,6 @@ export const styles = StyleSheet.create({
   },
 
   tituloAgendamento: {
-    letterSpacing: 1,
     color: "#5C5F60",
     fontWeight: "700",
     fontSize: 16,
@@ -134,12 +133,12 @@ export const styles = StyleSheet.create({
     fontSize: 15,
     textAlign: "center",
     lineHeight: 16,
-    fontWeight: 500
+    fontWeight: 500,
   },
 
   dataDia: {
     color: "#9E001F",
-    fontWeight: "700",
+    fontWeight: "600",
     fontSize: 30,
     textAlign: "center",
     lineHeight: 32,
@@ -155,6 +154,7 @@ export const styles = StyleSheet.create({
   tituloData: {
     color: "#141D23",
     fontSize: 15,
+    fontWeight: 500,
   },
 
   subtituloData: {
@@ -163,6 +163,31 @@ export const styles = StyleSheet.create({
 
   containerBotao: {
     justifyContent: "center",
-    // marginLeft: 20,
+  },
+
+  containerBotoesPai: {
+    paddingHorizontal: "5%",
+    marginTop: 30,
+    display: "flex",
+    flexDirection: "row",
+  },
+
+  listaBotoesConteudo: {
+    flexGrow: 1, //conteúdo expandir e ocupar a tela
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+
+  containerCampanhas: {
+    display: "flex",
+    flexDirection: "row",
+    marginHorizontal: "5%",
+    marginTop: 30,
+  },
+
+  tituloCampanhas: {
+    fontSize: 16,
+    color: "#141D23",
+    fontWeight: 700,
   },
 });

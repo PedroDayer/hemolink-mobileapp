@@ -1,10 +1,39 @@
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import {
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+  FlatList,
+} from "react-native";
 import { Header } from "../../components/Hearder";
 import { styles } from "./style";
 import { Feather, FontAwesome } from "@expo/vector-icons";
 import { Button } from "../../components/Button";
+import { BotaoAtalho } from "../../components/BotaoAtalho";
 
 export const Home = () => {
+  const botoesFiltros = [
+    {
+      id: "1",
+      label: "Agendar",
+      icon: "calendar-outline",
+      corIcone: "#9E001F",
+    },
+    { id: "2", label: "Histórico", icon: "time-outline", corIcone: "#9E001F" },
+    {
+      id: "3",
+      label: "Carteirinha",
+      icon: "card-outline",
+      corIcone: "#9E001F",
+    },
+    {
+      id: "4",
+      label: "Indicar",
+      icon: "share-social-outline",
+      corIcone: "#9E001F",
+    },
+  ] as const;
+
   return (
     <View style={styles.containerMain}>
       <Header />
@@ -41,7 +70,7 @@ export const Home = () => {
           </View>
           <View style={styles.containerCalendario}>
             <TouchableOpacity>
-              <Feather name="calendar" size={14} color="#C8102E" />
+              <Feather name="calendar" size={16} color="#C8102E" />
             </TouchableOpacity>
           </View>
         </View>
@@ -56,9 +85,45 @@ export const Home = () => {
             <Text style={styles.subtituloData}>Terça-feira as 10:00</Text>
           </View>
           <View style={styles.containerBotao}>
-            <Button texto="Ver local" fontSizeTexto={12} paddingHorizontal={5} paddingVertical={0} onPress={() => {}} />
+            <Button
+              texto="Ver local"
+              fontSizeTexto={12}
+              paddingHorizontal={5}
+              paddingVertical={0}
+              onPress={() => {}}
+            />
           </View>
         </View>
+
+        <View style={styles.containerBotoesPai}>
+          <FlatList
+            data={botoesFiltros}
+            keyExtractor={(item) => item.id}
+            horizontal
+            scrollEnabled={false}
+            contentContainerStyle={styles.listaBotoesConteudo}
+            renderItem={({ item }) => {
+              return (
+                <View>
+                  <BotaoAtalho
+                    label={item.label}
+                    icon={item.icon}
+                    onPress={() => {}}
+                    corIcone={item.corIcone}
+                  />
+                </View>
+              );
+            }}
+          />
+        </View>
+
+        <View style={styles.containerCampanhas}>
+          <View>
+            <Text style={styles.tituloCampanhas}>CAMPANHAS EM DESTAQUE</Text>
+          </View>
+        </View>
+
+        
       </ScrollView>
     </View>
   );
