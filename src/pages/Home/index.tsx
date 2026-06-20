@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import { Header } from "../../components/Hearder";
 import { styles } from "./style";
-import { Feather, FontAwesome } from "@expo/vector-icons";
+import { Feather, FontAwesome, Ionicons } from "@expo/vector-icons";
 import { Button } from "../../components/Button";
 import { BotaoAtalho } from "../../components/BotaoAtalho";
 
@@ -31,6 +31,34 @@ export const Home = () => {
       label: "Indicar",
       icon: "share-social-outline",
       corIcone: "#9E001F",
+    },
+  ] as const;
+
+  const dicas = [
+    {
+      id: "1",
+      icon: "water-outline",
+      titulo: "Hidratação",
+      subtitulo: "Beba bastante água antes e depois da doação.",
+    },
+    {
+      id: "2",
+      icon: "fast-food-outline",
+      titulo: "Alimentação",
+      subtitulo: "Evite alimentos gordurosos 3h antes de doar.",
+    },
+    {
+      id: "3",
+      icon: "moon-outline",
+      titulo: "Repouso",
+      subtitulo: "Durma pelo menos 6h na noite anterior.",
+    },
+    {
+      id: "4",
+      icon: "wallet-outline",
+      titulo: "Documento",
+      subtitulo:
+        "Leve um documento oficial com foto (RG, CNH ou e-Título) no dia da doação.",
     },
   ] as const;
 
@@ -119,11 +147,37 @@ export const Home = () => {
 
         <View style={styles.containerCampanhas}>
           <View>
-            <Text style={styles.tituloCampanhas}>CAMPANHAS EM DESTAQUE</Text>
+            <Text style={styles.tituloCampanhas}>Dicas de Saúde</Text>
           </View>
         </View>
 
-        
+        <View style={{ marginTop: 10, paddingHorizontal: "5%" }}>
+          <FlatList
+            data={dicas}
+            keyExtractor={(item) => item.id}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{ gap: 10 }}
+            renderItem={({ item }) => {
+              return (
+                <View style={styles.containerDicas}>
+                  <View style={styles.containerDicasFilho}>
+                    <View>
+                      <Ionicons name={item.icon} size={28} color="#9E001F" />
+                    </View>
+                    <View>
+                      <Text style={{ color: "#141D23", fontWeight: 500, fontSize: 15, }}>{item.titulo}</Text>
+                    </View>
+                    <View>
+                      <Text style={{ color: "#5C5F60" }}>{item.subtitulo}</Text>
+                    </View>
+                  </View>
+                </View>
+              );
+            }}
+          />
+        </View>
+        <View style={{ marginTop: 50 }}></View>
       </ScrollView>
     </View>
   );

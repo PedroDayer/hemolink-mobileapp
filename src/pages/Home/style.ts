@@ -190,4 +190,17 @@ export const styles = StyleSheet.create({
     color: "#141D23",
     fontWeight: 700,
   },
+
+  containerDicas: {
+    backgroundColor: "#ffffff",
+    borderColor: "#EAD0CF",
+    borderWidth: 1,
+    borderRadius: 12,
+    width: 200,
+  },
+  containerDicasFilho: {
+    padding: 10,
+    gap: 5,
+    justifyContent: "center",
+  },
 });
