@@ -6,26 +6,26 @@ export const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: "#E5E7EB", 
-    overflow: "hidden", 
+    borderColor: "#E5E7EB",
+    overflow: "hidden",
     marginBottom: 20,
   },
 
   containerImagem: {
     width: "100%",
-    position: "relative", 
+    position: "relative",
   },
   imagem: {
     width: "100%",
     height: 140,
-    objectFit: "cover"
+    objectFit: "cover",
   },
   pilula: {
     position: "absolute",
     top: 10,
     right: 10,
     paddingHorizontal: 12,
-    paddingVertical: 4,
+    paddingVertical: 6,
     borderRadius: 16,
   },
   pilulaText: {
@@ -35,10 +35,11 @@ export const styles = StyleSheet.create({
   },
 
   containerConteudo: {
-    padding: 16, 
+    padding: 15,
+    display: "flex",
   },
   title: {
-    fontSize: 18,
+    fontSize: 19,
     fontWeight: "bold",
     color: "#50606F",
     marginBottom: 8,
@@ -46,11 +47,11 @@ export const styles = StyleSheet.create({
   containerEndereco: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 16,
+    marginBottom: 15,
   },
   textoEndereco: {
-    color: "#50606F", 
-    fontSize: 14,
+    color: "#50606F",
+    fontSize: 15,
     marginLeft: 4,
   },
 
@@ -61,19 +62,19 @@ export const styles = StyleSheet.create({
     marginBottom: 6,
   },
   textoEstoqueGeral: {
-    fontSize: 12,
+    fontSize: 13,
     color: "#50606F",
   },
   textoStatus: {
-    fontSize: 12,
+    fontSize: 13,
     fontWeight: "bold",
   },
   barra: {
-    height: 6,
+    height: 10,
     width: "100%",
     backgroundColor: "#E2E8F0",
     borderRadius: 3,
-    marginBottom: 16, 
+    marginBottom: 16,
   },
   barrinha: {
     height: "100%",

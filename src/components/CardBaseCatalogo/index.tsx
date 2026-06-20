@@ -39,7 +39,6 @@ export const CardBaseCatalogo = ({
   stateStyleAdd,
   cardStyleView,
 }: PropsCardBase) => {
-  
   const getStatusInfo = (percentage: number) => {
     if (percentage <= 30)
       return { color: "#DC2626", label: "Crítico", prefixo: "Urgência" };
@@ -72,6 +71,37 @@ export const CardBaseCatalogo = ({
         )}
       </View>
       {name && <Text style={[nameStyleAdd]}>{name}</Text>}
+      <View style={styles.containerConteudo}>
+        {name && <Text style={styles.title}>{name}</Text>}
+
+        <View style={styles.containerEndereco}>
+          <Ionicons name="location-sharp" size={16} color="#DC2626" />
+          {city && state && (
+            <Text style={styles.textoEndereco}>
+              {city} - {state}
+            </Text>
+          )}
+        </View>
+      </View>
+
+      <View style={{ marginHorizontal: 15, display: "flex" }}>
+        <View style={styles.headerEstoque}>
+          <Text style={styles.textoEstoqueGeral}>Estoque Geral</Text>
+          <Text style={[styles.textoStatus, { color: statusColor }]}>
+            {statusLabel} ({percentage.toFixed(1)}%)
+          </Text>
+        </View>
+
+        <View style={styles.barra}>
+          <View
+            style={[
+              styles.barrinha,
+              { width: `${percentage}%`, backgroundColor: statusColor },
+            ]}
+          />
+        </View>
+      </View>
+      {/* {name && <Text style={[nameStyleAdd]}>{name}</Text>}
       <View style={styles.containerEndereco}>
         {city && <Text style={[cityStyleAdd]}>{city}</Text>}
         {state && <Text style={[stateStyleAdd]}>{state}</Text>}

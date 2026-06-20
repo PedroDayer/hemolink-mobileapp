@@ -16,11 +16,20 @@ import { EmptyState } from "../../components/EmptyState";
 import { CardBaseCatalogo } from "../../components/CardBaseCatalogo";
 import { obterBloodStock } from "../../util/obterBloodStock";
 import { obterTiposSanguineosCriticos } from "../../util/obterTiposSanguineosCriticos";
+import { Button } from "../../components/Button";
 
 export const Catalogo = () => {
   const [hospitais, setHospitais] = useState<Hospital[]>([]);
   const [isLoading, setIsLoading] = useState<Boolean>(false);
   const [isDados, setIsDados] = useState<Boolean>(false);
+
+  const [filtroSelecionado, setFiltroSelecionado] = useState<string>("1");
+  const botoesFiltros = [
+    { id: "1", nome: "Todos" },
+    { id: "2", nome: "Urgência Crítica" },
+    { id: "3", nome: "Mais Próximos" },
+    { id: "4", nome: "Favoritos" },
+  ];
 
   async function carregarInformacoes() {
     setIsLoading(true);
@@ -56,6 +65,19 @@ export const Catalogo = () => {
   //   getAllHospitais();
   // }, []);
 
+  const hospitaisFiltrados = hospitais.filter((hospital) => {
+    if (filtroSelecionado === "1") {
+      return true;
+    }
+
+    if (filtroSelecionado === "2") {
+      const { percentage } = obterBloodStock(hospital.bloodStock);
+      return percentage <= 30;
+    }
+
+    return true;
+  });
+
   return (
     <View style={styles.containerMain}>
       {isLoading ? (
@@ -84,18 +106,35 @@ export const Catalogo = () => {
                 />
               </View>
             </View>
-            {/* <TouchableOpacity
-            style={{
-              borderColor: "black",
-              borderWidth: 2,
-              height: 50,
-              marginBottom: 50,
-            }}
-          /> */}
+            
+            <FlatList
+              data={botoesFiltros}
+              keyExtractor={(item) => item.id}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{
+                paddingHorizontal: 16,
+                paddingVertical: 10,
+              }}
+              renderItem={({ item }) => {
+                const ativo = item.id === filtroSelecionado;
+                return (
+                  <View style={{ marginRight: 8 }}>
+                    {" "}
+                    <Button
+                      texto={item.nome}
+                      onPress={() => setFiltroSelecionado(item.id)}
+                      bg={ativo ? "#CE0C2C" : "#E2E8F0"}
+                      color={ativo ? "#FFFFFF" : "#475569"}
+                    />
+                  </View>
+                );
+              }}
+            />
 
             <View style={styles.containerCard}>
               <FlatList
-                data={hospitais}
+                data={hospitaisFiltrados}
                 contentContainerStyle={{
                   paddingBottom: 20,
                   gap: 12,
