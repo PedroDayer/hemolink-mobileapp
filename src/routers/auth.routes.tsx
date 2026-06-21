@@ -1,7 +1,7 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Login } from "./pagesTestes/Login";
-import { Cadastro } from "./pagesTestes/Cadastro";
+import { Login } from "../pages/Login";
+import { Cadastro } from "../pages/Cadastro";
 import { ParametrosRotasAuth } from "./navigation";
 
 const AuthStack = createNativeStackNavigator<ParametrosRotasAuth>();

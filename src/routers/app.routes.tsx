@@ -1,7 +1,7 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { DrawerRouters } from "./drawer";
-import { DetalheHospital } from "./pagesTestes/DetalheHospital";
+import { DetalheHospital } from "../pages/DetalheHospital";
 import { ParametrosRotasApp } from "./navigation";
 
 const AppStack = createNativeStackNavigator<ParametrosRotasApp>();

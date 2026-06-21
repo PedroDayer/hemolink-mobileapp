@@ -8,7 +8,7 @@ import { TabsRouters } from "./tabs";
 import { Text, View } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { Perfil } from "../pages/Perfil";
-import { Teste } from "./pagesTestes/Teste";
+import { Teste } from "../pages/Teste";
 import { ParametrosRotasDrawer } from "./navigation";
 
 const Drawer = createDrawerNavigator<ParametrosRotasDrawer>();

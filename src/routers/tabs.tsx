@@ -4,10 +4,10 @@ import { FontAwesome5, AntDesign } from "@expo/vector-icons";
 import Icon from "@expo/vector-icons/Ionicons";
 import { ParametrosRotasTabs } from "./navigation";
 import { styles } from "./style";
-import { Home } from "./pagesTestes/Home";
+import { Home } from "../pages/Home";
 import { Perfil } from "../pages/Perfil";
-import { Teste } from "./pagesTestes/Teste";
-import { Administrador } from "./pagesTestes/Administrador";
+import { Teste } from "../pages/Teste";
+import { Administrador } from "../pages/Administrador";
 
 const Tabs = createBottomTabNavigator<ParametrosRotasTabs>();
 
