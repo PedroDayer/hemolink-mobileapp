@@ -5,7 +5,6 @@ export const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#ffffff',
-        alignItems: 'center',
         paddingTop: 40,
         gap: 16,
     },
@@ -95,4 +94,33 @@ export const styles = StyleSheet.create({
         fontSize: 11,
         color: theme.colors.textMuted,
     },
+    avatarContainer: {
+        width: 70,
+        height: 70,
+        position: 'relative',
+    },
+    fotoPlaceholder: {
+        width: 70,
+        height: 70,
+        borderRadius: 35,
+        backgroundColor: '#ccc',
+    },
+    tituloCard: {
+        fontSize: 12,
+        fontWeight: 'bold',
+        color: theme.colors.textMuted,
+        marginBottom: 0.5,
+    },
+    tituloLinha: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginHorizontal: 16,
+        marginBottom: 8
+    },
+    editar: {
+        fontSize: 12,
+        fontWeight: 'bold',
+        color: theme.colors.primary,
+    }
 });
