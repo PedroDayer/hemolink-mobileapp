@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text, TouchableOpacity, Alert, ScrollView, Modal, FlatList } from 'react-native'
-import { Input } from '../../../components/Input'
+import { Input } from '../../components/Input'
 import {
   Hospital, BloodStock,
   buscarHospital, atualizarHospital, excluirHospital, cadastrarHospital
-} from '../../../services/HospitalService'
-import { Button } from '../../../components/Button'
-import { BackButton } from '../../../components/BackButton'
+} from '../../services/HospitalService'
+import { Button } from '../../components/Button'
+import { BackButton } from '../../components/BackButton'
 import { styles } from './style'
-import { theme } from '../../../theme'
-import { formatPhone } from '../../../util/formataTelefone'
-import { formatCEP } from '../../../util/formataCEP'
-import { formatCNPJ } from '../../../util/formataCNPJ'
-import { apenasNumeros } from '../../../util/apenasNumeros'
+import { theme } from '../../theme'
+import { formatPhone } from '../../util/formataTelefone'
+import { formatCEP } from '../../util/formataCEP'
+import { formatCNPJ } from '../../util/formataCNPJ'
+import { apenasNumeros } from '../../util/apenasNumeros'
 import { BLOOD_VAZIO, TIPOS_SANGUE, UF_LIST } from './helper'
 
 
