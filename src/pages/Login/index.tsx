@@ -44,6 +44,7 @@ export function Login() {
     defaultValues: { email: '', password: '' },
   });
 
+  // Login tradicional com E-mail e Senha
   async function handleLogin(data: LoginFormData) {
     if (loading || loadingGoogle) return;
     try {
@@ -73,15 +74,18 @@ export function Login() {
     if (loading || loadingGoogle) return;
     try {
       setLoadingGoogle(true);
-      await signInWithGoogle();
       
-      Toast.show({
-        type: 'success',
-        text1: 'Sucesso',
-        text2: 'Bem-vindo ao HemoLink!',
-      });
+      const logadoComSucesso = await signInWithGoogle();
 
-      navigation.navigate('Home');
+      if (logadoComSucesso) {
+        Toast.show({
+          type: 'success',
+          text1: 'Sucesso',
+          text2: 'Bem-vindo ao HemoLink!',
+        });
+
+        navigation.navigate('Home');
+      }
     } catch (error) {
       console.error(error);
       Toast.show({
