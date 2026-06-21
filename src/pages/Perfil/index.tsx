@@ -1,4 +1,4 @@
-import { Text, View, Image, Modal, TouchableOpacity, ScrollView } from "react-native"
+import { Text, View, Image, Modal, TouchableOpacity, ScrollView, TextInput } from "react-native"
 import React, { useEffect, useState } from 'react';
 import * as ImagePicker from 'expo-image-picker'
 import { Button } from "../../components/Button";
@@ -8,11 +8,39 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { CardBasePerfil } from "../../components/CardBasePerfil";
 import { InfoPerfil } from "../../components/InfoPerfil";
 import { theme } from '../../theme'; 
-import { lerFavoritos, salvarFavoritos } from "../../util/favoritosStorage";
+import { lerFoto, salvarFoto } from "../../util/fotoStorage";
+import { useAuth } from "../../contexts/AuthContext";
+import { lerDados, salvarDados } from "../../util/dadosEditaveis";
 
 export const Perfil = () => {
   const [foto, setFoto] = useState<string | null>(null);
   const [modalVisible, setModalVisible] = useState(false)
+  const [nome, setNome] = useState('');
+  const [telefone, setTelefone] = useState('');
+  const [modalEditarVisible, setModalEditarVisible] = useState(false);
+  
+  const { user } = useAuth();
+
+  useEffect(() => {
+    const carregarFoto = async () => {
+      const uriSalva = await lerFoto();
+      if (uriSalva) setFoto(uriSalva);
+    };
+    carregarFoto();
+
+    const carregarDados = async () => {
+      const dados = await lerDados();
+      if (dados) {
+        setNome(dados.nome);
+        setTelefone(dados.telefone);
+      } else {
+        setNome(user?.nome || "");
+        setTelefone("+55 (11) 98765-4321");
+      }
+    };
+    carregarDados();
+  }, []);
+
 
   const escolherDaGaleria = async () => {
     const permissao = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -25,8 +53,11 @@ export const Perfil = () => {
       aspect: [1,1],
       quality: 1,
     });
-    if (!resultado.canceled) 
-      setFoto(resultado.assets[0].uri);
+    if (!resultado.canceled) {
+      const uri = (resultado.assets[0].uri);
+      setFoto(uri);
+      await salvarFoto(uri);
+    }
   };
 
   const tirarFoto = async () => {
@@ -38,8 +69,17 @@ export const Perfil = () => {
       aspect: [1,1],
       quality: 1
     });
-    if (!resultado.canceled) setFoto(resultado.assets[0].uri);
+    if (!resultado.canceled) {
+      const uri = resultado.assets[0].uri;
+      setFoto(uri);
+      await salvarFoto(uri);
+    }
   }
+  
+  const salvarEdicao= async () => {
+    await salvarDados({ nome, telefone });
+    setModalEditarVisible(false);
+  };
 
 
 
@@ -62,7 +102,7 @@ export const Perfil = () => {
         </View>
         
         <View style={styles.perfilInfo}>
-          <Text style={styles.nome}> Joao Silva</Text>
+          <Text style={styles.nome}>{nome || "-"}</Text>
           <View style={styles.badges}>
             <Text style={styles.badgeDoador}>DOADOR</Text>
             <Text style={styles.badgeSangue}>O Negativo</Text>
@@ -83,12 +123,14 @@ export const Perfil = () => {
     </LinearGradient>
     <View style={styles.tituloLinha}>
       <Text style={styles.tituloCard}>DADOS PESSOAIS</Text>
-      <TouchableOpacity><Text style={styles.editar}>EDITAR</Text></TouchableOpacity>
+      <TouchableOpacity onPress= {() => setModalEditarVisible(true)}>
+        <Text style={styles.editar}>EDITAR</Text>
+        </TouchableOpacity>
     </View>
     <CardBasePerfil>
-      <InfoPerfil icone="person-outline" label="Nome Completo" valor="João Silva" />
-      <InfoPerfil icone="mail-outline" label="E-mail" valor="joao.silva@email.com" />
-      <InfoPerfil icone="call-outline" label="Telefone" valor="+55 (11) 98765-4321" semLinha />
+      <InfoPerfil icone="person-outline" label="Nome Completo" valor={nome || "-"} />
+      <InfoPerfil icone="mail-outline" label="E-mail" valor={user?.email || "-"} />
+      <InfoPerfil icone="call-outline" label="Telefone" valor={telefone} semLinha />
     </CardBasePerfil>
     <View style={styles.tituloLinha}>
       <Text style={styles.tituloCard}>INFORMAÇÕES MÉDICAS</Text>
@@ -127,6 +169,34 @@ export const Perfil = () => {
 }} />
         <Button texto="Cancelar" onPress={() => setModalVisible(false)} />
         </View>
+      </Modal>
+      <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalEditarVisible}
+          onRequestClose={() => setModalEditarVisible(false)}
+      >
+          <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'flex-start' }}>
+              <View style={{ backgroundColor: '#fff', padding: 20, borderTopLeftRadius: 16, borderTopRightRadius: 16, gap: 12 }}>
+                  <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Editar Dados</Text>
+
+                  <Text>Nome</Text>
+                  <TextInput
+                      value={nome}
+                      onChangeText={setNome}
+                      style={{ borderWidth: 1, borderColor: '#ddd', borderRadius: 8, padding: 10 }}
+                  />     
+                  <Text>Telefone</Text>
+                  <TextInput
+                      value={telefone}
+                      onChangeText={setTelefone}
+                      style={{ borderWidth: 1, borderColor: '#ddd', borderRadius: 8, padding: 10 }}
+                      keyboardType="phone-pad"
+                  />
+                  <Button texto="Salvar" onPress={salvarEdicao} />
+                  <Button texto="Cancelar" onPress={() => setModalEditarVisible(false)} />
+              </View>
+          </View>
       </Modal>
     </ScrollView>
   )
