@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     justifyContent: "space-between",
-    marginBottom: 10
+    marginBottom: 10,
   },
 
   containerQrCode: {
@@ -43,7 +43,7 @@ export const styles = StyleSheet.create({
     backgroundColor: "#ECF5FE",
     borderColor: "#EAD0CF",
     borderWidth: 1,
-    padding: 48,
+    padding: 20,
     borderRadius: 12,
     justifyContent: "center",
     alignItems: "center",
@@ -54,12 +54,17 @@ export const styles = StyleSheet.create({
     borderColor: "#ffffff",
     borderWidth: 10,
     borderRadius: 12,
-    padding: 24,
+    padding: 20,
   },
 
   qrCodeDescricao: {
     marginTop: 10,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+  },
+
+  botaoVoltar: {
+    padding: "5%",
+    width: "100%",
   },
 });

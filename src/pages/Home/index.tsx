@@ -185,8 +185,7 @@ export const Home = () => {
             <Button
               texto="Ver local"
               fontSizeTexto={12}
-              paddingHorizontal={5}
-              paddingVertical={0}
+              paddingHorizontal={8}
               onPress={() => {}}
             />
           </View>

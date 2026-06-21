@@ -1,8 +1,9 @@
-import { Modal, Text, View, Pressable } from "react-native";
+import { Modal, Text, View, Pressable, TouchableOpacity } from "react-native";
 import { styles } from "./style";
 import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import QRCode from "react-native-qrcode-svg";
+import { Button } from "../Button";
 
 interface ProspModalDoacao {
   visible: boolean;
@@ -38,7 +39,7 @@ export const ModalDoacao = ({
             <View
               style={{
                 borderColor: "#EAD0CF",
-                borderWidth: 0.1,
+                borderWidth: 1,
                 width: "100%",
                 marginHorizontal: 30,
               }}
@@ -62,18 +63,45 @@ export const ModalDoacao = ({
                     }}
                   >
                     <QRCode
-                      value="https://github.com/awesome-qr-code"
-                      size={120}
+                      value="https://www.linkedin.com/in/pedro-dayer-4a630b398/"
+                      size={100}
                       color="#C8102E"
                       backgroundColor="white"
                     />
                   </View>
                 </View>
                 <View style={styles.qrCodeDescricao}>
-                  <Text style={{textAlign: "center", color: "#5C5F60"}}>Escaneie o QR Code com seu banco confiável</Text>
-                  <Text style={{textAlign: "center", color: "#C8102E", fontWeight: 700}}>PIX HemoLink</Text>
+                  <Text
+                    style={{
+                      textAlign: "center",
+                      color: "#5C5F60",
+                      fontSize: 12,
+                      marginBottom: 5,
+                    }}
+                  >
+                    Escaneie o QR Code com seu banco confiável
+                  </Text>
+                  <Text
+                    style={{
+                      textAlign: "center",
+                      color: "#C8102E",
+                      fontWeight: 700,
+                    }}
+                  >
+                    PIX HemoLink
+                  </Text>
                 </View>
               </View>
+            </View>
+            <View style={styles.botaoVoltar}>
+              {/* OBS: NAO FOI USADO O COMPONENTE BACKBUTTON. VER COM O PESSOAL SE VAI SER USADO MAIS PARA FRENTE */}
+              <Button
+                texto="voltar"
+                fontSizeTexto={12}
+                onPress={modalClose}
+                bg="#F1F1F1"
+                color="#5C5F60"
+              />
             </View>
           </View>
         </View>
