@@ -70,16 +70,13 @@ export function Login() {
     }
   }
 
-  // 🌟 CORRIGIDO: Login com o Google sincronizado com feedback visual
   async function handleGoogleLogin() {
     if (loading || loadingGoogle) return;
     try {
       setLoadingGoogle(true);
       
-      // Espera o fluxo completo do Google e o cadastro/busca na API terminar
       const logadoComSucesso = await signInWithGoogle();
 
-      // Se retornou verdadeiro, mostra a mensagem e vai para a Home
       if (logadoComSucesso) {
         Toast.show({
           type: 'success',

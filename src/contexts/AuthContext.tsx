@@ -10,7 +10,7 @@ export interface AuthContextData {
   user: User | null;
   loading: boolean;
   signIn: (data: SignInData) => Promise<void>;
-  signInWithGoogle: () => Promise<boolean>; // 🌟 Atualizado para retornar um booleano
+  signInWithGoogle: () => Promise<boolean>; 
   signOut: () => Promise<void>;
 }
 
@@ -32,7 +32,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Hook unificado do Google
   const [request, response, promptAsync] = AuthSession.useAuthRequest(
     {
       clientId: '77714710968-1bbf822g9ht8360pjkqatjihbrib4pme.apps.googleusercontent.com',
@@ -44,7 +43,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
     googleDiscovery
   );
 
-  // Processa a resposta do Google, busca os dados e salva na API
   async function handleGoogleResponse(authResponse: any) {
     try {
       const accessToken = authResponse.authentication?.accessToken || authResponse.params?.access_token;
@@ -115,14 +113,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }
 
-  // 🌟 SINCRONIZADO: Agora a ecrã de login pode dar "await" real até o utilizador estar guardado!
+
   async function signInWithGoogle() {
     try {
       const result = await promptAsync();
       
       if (result?.type === 'success') {
         await handleGoogleResponse(result);
-        return true; // Retorna verdadeiro indicando que todo o processo terminou com sucesso
+        return true; 
       }
       
       return false;
