@@ -8,7 +8,7 @@ import { TabsRouters } from "./tabs";
 import { Text, View } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { Perfil } from "../pages/Perfil";
-import { Teste } from "../pages/Teste";
+import { Catalogo } from "../pages/Catalogo";
 import { ParametrosRotasDrawer } from "./navigation";
 
 const Drawer = createDrawerNavigator<ParametrosRotasDrawer>();
@@ -55,14 +55,14 @@ export const DrawerRouters = () => {
         }}
       />
       <Drawer.Screen
-        name="DrawerTeste"
-        component={Teste}
+        name="DrawerCatalogo"
+        component={Catalogo}
         options={{
           drawerIcon: ({ color, size }) => (
-            <Feather name="home" color={color} size={size} />
+            <Feather name="list" color={color} size={size} />
           ),
-          drawerLabel: "Teste",
-          title: "Teste",
+          drawerLabel: "Catalogo",
+          title: "Catalogo",
         }}
       />
     </Drawer.Navigator>

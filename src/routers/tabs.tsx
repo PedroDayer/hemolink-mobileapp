@@ -1,13 +1,14 @@
+import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Text, View } from "react-native";
-import { FontAwesome5, AntDesign } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
 import Icon from "@expo/vector-icons/Ionicons";
+
 import { ParametrosRotasTabs } from "./navigation";
-import { styles } from "./style";
 import { Home } from "../pages/Home";
 import { Perfil } from "../pages/Perfil";
-import { Teste } from "../pages/Teste";
+import { Catalogo } from "../pages/Catalogo";
 import { Administrador } from "../pages/Administrador";
+import { TabBarIcon } from "../components/TabBarIcon";
 
 const Tabs = createBottomTabNavigator<ParametrosRotasTabs>();
 
@@ -16,65 +17,47 @@ export const TabsRouters = () => {
     <Tabs.Navigator
       screenOptions={{
         headerShown: false,
+        tabBarShowLabel: false,
         tabBarStyle: {
           backgroundColor: "#F6FAFF",
           height: 90,
           borderTopWidth: 1,
-          position: "absolute",
           borderColor: "#E5BDBB",
+          position: "absolute",
+          elevation: 0,
+          paddingBottom: 0,
+          paddingTop: 0,
         },
-        tabBarShowLabel: true,
+        tabBarItemStyle: {
+          justifyContent: "center",
+          alignItems: "center",
+          height: 90,
+        },
       }}
     >
       <Tabs.Screen
         name="TabsHome"
         component={Home}
         options={{
-          title: "",
           tabBarIcon: ({ focused }) => (
-            <View
-              style={[
-                styles.cardTabs,
-                focused ? { backgroundColor: "#C8102E" } : { backgroundColor: "transparent" },
-              ]}
-            >
-              <FontAwesome5
-                name="hospital"
-                size={27}
-                color={focused ? "#FFDAD8" : "#5C5F60"}
-              />
-              <Text
-                style={[styles.textTabs, { color: focused ? "#FFDAD8" : "#5C5F60" }]}
-              >
-                Home
-              </Text>
-            </View>
+            <TabBarIcon
+              focused={focused}
+              label="Home"
+              icon={<FontAwesome5 name="hospital" size={24} color={focused ? "#FFDAD8" : "#5C5F60"} />}
+            />
           ),
         }}
       />
       <Tabs.Screen
-        name="TabsTeste"
-        component={Teste}
+        name="TabsCatalogo"
+        component={Catalogo}
         options={{
-          title: "",
           tabBarIcon: ({ focused }) => (
-            <View
-              style={[
-                styles.cardTabs,
-                focused ? { backgroundColor: "#C8102E" } : { backgroundColor: "transparent" },
-              ]}
-            >
-              <AntDesign
-                name="home"
-                size={25}
-                color={focused ? "#FFDAD8" : "#5C5F60"}
-              />
-              <Text
-                style={[styles.textTabs, { color: focused ? "#FFDAD8" : "#5C5F60" }]}
-              >
-                Teste
-              </Text>
-            </View>
+            <TabBarIcon
+              focused={focused}
+              label="Catálogo"
+              icon={<FontAwesome5 name="list" size={22} color={focused ? "#FFDAD8" : "#5C5F60"} />}
+            />
           ),
         }}
       />
@@ -82,25 +65,12 @@ export const TabsRouters = () => {
         name="TabsPerfil"
         component={Perfil}
         options={{
-          title: "",
           tabBarIcon: ({ focused }) => (
-            <View
-              style={[
-                styles.cardTabs,
-                focused ? { backgroundColor: "#C8102E" } : { backgroundColor: "transparent" },
-              ]}
-            >
-              <FontAwesome5
-                name="user"
-                size={24}
-                color={focused ? "#FFDAD8" : "#5C5F60"}
-              />
-              <Text
-                style={[styles.textTabs, { color: focused ? "#FFDAD8" : "#5C5F60" }]}
-              >
-                Perfil
-              </Text>
-            </View>
+            <TabBarIcon
+              focused={focused}
+              label="Perfil"
+              icon={<FontAwesome5 name="user" size={22} color={focused ? "#FFDAD8" : "#5C5F60"} />}
+            />
           ),
         }}
       />
@@ -108,18 +78,12 @@ export const TabsRouters = () => {
         name="TabsAdministrador"
         component={Administrador}
         options={{
-          title: "",
           tabBarIcon: ({ focused }) => (
-            <View style={styles.cardTabs}>
-              <Icon
-                name="home-outline"
-                size={30}
-                color={focused ? "#FFDAD8" : "#5C5F60"}
-              />
-              <Text style={styles.textTabs}>
-                Administrador
-              </Text>
-            </View>
+            <TabBarIcon
+              focused={focused}
+              label="Admin"
+              icon={<Icon name="home-outline" size={26} color={focused ? "#FFDAD8" : "#5C5F60"} />}
+            />
           ),
         }}
       />

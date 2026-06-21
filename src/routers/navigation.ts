@@ -12,14 +12,14 @@ export type ParametrosRotasApp = {
 export type ParametrosRotasTabs = {
   TabsHome: undefined;
   TabsPerfil: undefined;
-  TabsTeste: undefined;
+  TabsCatalogo: undefined;
   TabsAdministrador: undefined;
 };
 
 export type ParametrosRotasDrawer = {
   DrawerHome: undefined;
   DrawerPerfil: undefined;
-  DrawerTeste: undefined;
+  DrawerCatalogo: undefined;
 };
 
 declare global {
