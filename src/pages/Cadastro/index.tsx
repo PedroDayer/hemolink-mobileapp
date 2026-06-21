@@ -69,7 +69,7 @@ export function Cadastro() {
         text1: 'Conta criada!',
       });
 
-      navigation.navigate('StackLogin');
+      navigation.navigate('Login');
 
     } catch (error: any) {
       console.error('Erro ao cadastrar doador no MockAPI:', error?.response?.data || error.message);
@@ -93,7 +93,7 @@ export function Cadastro() {
       footer={
         <SignInContainer>
           <SignInText>Já tem uma conta? </SignInText>
-          <TouchableOpacity onPress={() => navigation.navigate('StackLogin')} activeOpacity={0.7}>
+          <TouchableOpacity onPress={() => navigation.navigate('Login')} activeOpacity={0.7}>
             <SignInBoldText>Faça Login</SignInBoldText>
           </TouchableOpacity>
         </SignInContainer>

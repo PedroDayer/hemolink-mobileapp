@@ -56,7 +56,7 @@ export function Login() {
         text2: 'Bem-vindo ao HemoLink!',
       });
 
-      navigation.navigate('StackHome');
+      navigation.navigate('Home');
     } catch (error) {
       console.error(error);
       Toast.show({
@@ -81,7 +81,7 @@ export function Login() {
         text2: 'Bem-vindo ao HemoLink!',
       });
 
-      navigation.navigate('StackHome');
+      navigation.navigate('Home');
     } catch (error) {
       console.error(error);
       Toast.show({
@@ -95,7 +95,7 @@ export function Login() {
   }
 
   function handleNavigateToRegister() {
-    navigation.navigate('StackCadastro');
+    navigation.navigate('Cadastro');
   }
 
   return (
