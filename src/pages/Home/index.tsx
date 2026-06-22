@@ -61,8 +61,8 @@ export const Home = () => {
       listarRegistros()
         .then((registrosRes) => {
           const data = registrosRes.data as (RegistroDoacao & { doacaoRealizada: boolean })[]
-          setTotalRegistros(data.length)
-          setDoacoesAno(data.filter((r) => new Date(r.criadoEm).getFullYear() === new Date().getFullYear()).length)
+          setTotalRegistros(data.filter((r) => r.doacaoRealizada).length)
+          setDoacoesAno(data.filter((r) => r.doacaoRealizada && new Date(r.criadoEm).getFullYear() === new Date().getFullYear()).length)
 
           const pendentes = data
             .filter((r) => r.cpf === user?.cpf && !r.doacaoRealizada && r.ultimaDoacao)
