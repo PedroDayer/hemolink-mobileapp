@@ -1,27 +1,45 @@
+import React from "react";
 import {
   createDrawerNavigator,
   DrawerContentComponentProps,
   DrawerContentScrollView,
-  DrawerItemList,
+  DrawerItem,
 } from "@react-navigation/drawer";
 import { TabsRouters } from "./tabs";
-import { Text, TouchableOpacity, View } from "react-native";
-import { Feather, MaterialIcons } from "@expo/vector-icons";
-import { Perfil } from "./pagesTestes/Perfil";
-import { Teste } from "./pagesTestes/Teste";
+import { Text, View } from "react-native";
+import { Feather } from "@expo/vector-icons";
 import { ParametrosRotasDrawer } from "./navigation";
+import { LojaDePontos } from "../pages/LojaDePontos";
 
 const Drawer = createDrawerNavigator<ParametrosRotasDrawer>();
 
-//talvez importar esse componente em um arquivo(segregar ele desse arquivo)
-const CustimizacaoDrower = (props: DrawerContentComponentProps) => {
+const CustomizacaoDrawer = (props: DrawerContentComponentProps) => {
   return (
     <DrawerContentScrollView {...props}>
       <View style={{ padding: 20, backgroundColor: "#f4f4f4" }}>
         <Text style={{ fontSize: 18, fontWeight: "bold" }}>Menu</Text>
       </View>
-
-      <DrawerItemList {...props} />
+      
+      <DrawerItem
+        label="Início"
+        icon={({ color, size }) => <Feather name="home" color={color} size={size} />}
+        onPress={() => props.navigation.navigate("DrawerHome", { screen: "TabsHome" })}
+      />
+      <DrawerItem
+        label="Catálogo"
+        icon={({ color, size }) => <Feather name="list" color={color} size={size} />}
+        onPress={() => props.navigation.navigate("DrawerHome", { screen: "TabsCatalogo" })}
+      />
+      <DrawerItem
+        label="Perfil"
+        icon={({ color, size }) => <Feather name="user" color={color} size={size} />}
+        onPress={() => props.navigation.navigate("DrawerHome", { screen: "TabsPerfil" })}
+      />
+      <DrawerItem
+        label="Loja de Pontos"
+        icon={({ color, size }) => <Feather name="gift" color={color} size={size} />}
+        onPress={() => props.navigation.navigate("DrawerLojaDePontos")}
+      />
     </DrawerContentScrollView>
   );
 };
@@ -29,56 +47,11 @@ const CustimizacaoDrower = (props: DrawerContentComponentProps) => {
 export const DrawerRouters = () => {
   return (
     <Drawer.Navigator
-      screenOptions={() => ({
-        headerShown: false,
-        // headerStyle: {
-        //   borderBottomWidth: 1,
-        //   borderBottomColor: "#E5BDBB",
-        // },
-        // headerLeft: () => (
-        //   <TouchableOpacity
-        //     onPress={() => navigation.openDrawer()}
-        //     style={{ marginLeft: 15 }}
-        //   >
-        //     <MaterialIcons name="menu" size={28} color="#9E001F" />
-        //   </TouchableOpacity>
-        // ),
-      })}
-      drawerContent={(props) => <CustimizacaoDrower {...props} />}
+      screenOptions={{ headerShown: false }}
+      drawerContent={(props) => <CustomizacaoDrawer {...props} />}
     >
-      <Drawer.Screen
-        name="DrawerHome"
-        component={TabsRouters}
-        options={{
-          drawerIcon: ({ color, size }) => (
-            <Feather name="home" color={color} size={size} />
-          ),
-          drawerLabel: "Início",
-          title: "",
-        }}
-      />
-      <Drawer.Screen
-        name="DrawerPerfil"
-        component={Perfil}
-        options={{
-          drawerIcon: ({ color, size }) => (
-            <Feather name="user" color={color} size={size} />
-          ),
-          drawerLabel: "Perfil",
-          title: "Perfil",
-        }}
-      />
-      <Drawer.Screen
-        name="DrawerTeste"
-        component={Teste}
-        options={{
-          drawerIcon: ({ color, size }) => (
-            <Feather name="home" color={color} size={size} />
-          ),
-          drawerLabel: "Teste",
-          title: "Teste",
-        }}
-      />
+      <Drawer.Screen name="DrawerHome" component={TabsRouters} />
+      <Drawer.Screen name="DrawerLojaDePontos" component={LojaDePontos} />
     </Drawer.Navigator>
   );
 };

@@ -1,3 +1,5 @@
+import { DimensionValue } from 'react-native';
+
 type InputStyleProps = {
   color?: string;
   borderColor?: string;
@@ -7,6 +9,7 @@ type InputStyleProps = {
   errorColor?: string;
   isFocused?: boolean;
   disabled?: boolean;
+  paddingLeft?: number;
 };
 
 export const getInputStyles = ({
@@ -16,6 +19,7 @@ export const getInputStyles = ({
   width = '100%',
   hasError = false,
   errorColor = '#dc3545',
+  paddingLeft = 0,
   isFocused = false,
   disabled = false,
 }: InputStyleProps) => {
@@ -27,7 +31,7 @@ export const getInputStyles = ({
 
   return {
     container: {
-      width: width as any,
+      width: width as DimensionValue,
       marginBottom: 16,
     },
     wrapper: {
@@ -46,12 +50,17 @@ export const getInputStyles = ({
       paddingHorizontal: 16,
       paddingVertical: 12,
       textAlignVertical: 'center' as const,
+      paddingLeft: paddingLeft ?? 0,
     },
     iconLeft: {
-      marginRight: 10,
+      position: 'absolute',
+      left: 8
+    },
+    label:{
+      fontWeight:'600'
     },
     iconRight: {
-      marginLeft: 10,
+      marginLeft: 12,
     },
     errorText: {
       marginTop: 4,

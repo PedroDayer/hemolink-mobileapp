@@ -32,4 +32,10 @@ export const ICONS = {
   chechmark: "checkmark-outline",
   close: "close-outline",
   alert: "alert-outline",
+  gift:"gift-outline",
+  grid:"grid-outline",
+  shirt:"shirt-outline",
+  headset:"headset-outline",
+  arrowRight:"chevron-forward-outline"
+
 } as const;

@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
 
 interface ThemeProps {
   theme?: {
@@ -53,6 +53,7 @@ export const EyeIcon = styled(Ionicons).attrs(() => ({
 
 export const SignUpContainer = styled.View`
   width: 100%;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   margin-top: 8px;

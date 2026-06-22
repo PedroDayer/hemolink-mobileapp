@@ -1,28 +1,20 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, TouchableOpacity, Alert, ScrollView } from 'react-native'
+import { View, Text, TouchableOpacity, Alert, ScrollView, Modal, FlatList } from 'react-native'
 import { Input } from '../../../components/Input'
 import {
   Hospital, BloodStock,
   buscarHospital, atualizarHospital, excluirHospital, cadastrarHospital
 } from '../../../services/HospitalService'
+import { Button } from '../../../components/Button'
+import { BackButton } from '../../../components/BackButton'
+import { styles } from './style'
+import { theme } from '../../../theme'
+import { formatPhone } from '../../../util/formataTelefone'
+import { formatCEP } from '../../../util/formataCEP'
+import { formatCNPJ } from '../../../util/formataCNPJ'
+import { apenasNumeros } from '../../../util/apenasNumeros'
+import { BLOOD_VAZIO, TIPOS_SANGUE, UF_LIST } from './helper'
 
-const TIPOS_SANGUE: (keyof BloodStock)[] = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']
-
-const BLOOD_VAZIO: BloodStock = { 'A+': 0, 'A-': 0, 'B+': 0, 'B-': 0, 'AB+': 0, 'AB-': 0, 'O+': 0, 'O-': 0 }
-
-const CAMPOS: { chave: keyof Hospital; placeholder: string }[] = [
-  { chave: 'image', placeholder: 'URL da imagem' },
-  { chave: 'name', placeholder: 'Nome' },
-  { chave: 'cnpj', placeholder: 'CNPJ' },
-  { chave: 'address', placeholder: 'Endereço' },
-  { chave: 'city', placeholder: 'Cidade' },
-  { chave: 'state', placeholder: 'Estado' },
-  { chave: 'cep', placeholder: 'CEP' },
-  { chave: 'phone', placeholder: 'Telefone' },
-  { chave: 'email', placeholder: 'Email' },
-  { chave: 'website', placeholder: 'Website' },
-  { chave: 'openingHours', placeholder: 'Horário de funcionamento' },
-]
 
 export const DetalheHospital = ({ route, navigation }: any) => {
   const id = route.params?.id
@@ -31,6 +23,7 @@ export const DetalheHospital = ({ route, navigation }: any) => {
   const [hospital, setHospital] = useState<Hospital | null>(null)
   const [editando, setEditando] = useState(isCadastro)
   const [dados, setDados] = useState<Partial<Hospital>>({})
+  const [showUfModal, setShowUfModal] = useState(false)
 
   useEffect(() => {
     if (isCadastro) {
@@ -75,54 +68,154 @@ export const DetalheHospital = ({ route, navigation }: any) => {
   }
 
   function atualizarSangue(tipo: keyof BloodStock, valor: string) {
+    const num = Math.min(100, Math.max(0, Number(apenasNumeros(valor))))
     setDados({
       ...dados,
-      bloodStock: { ...dados.bloodStock, [tipo]: Number(valor) } as BloodStock,
+      bloodStock: { ...dados.bloodStock, [tipo]: num } as BloodStock,
     })
   }
+
+  function isFormValid(): boolean {
+    const required: (keyof Hospital)[] = [
+      'name', 'cnpj', 'address', 'city', 'state',
+      'cep', 'phone', 'email', 'website', 'openingHours', 'image',
+    ]
+    return required.every(f => dados[f]?.toString().trim())
+  }
+
+  const inputProps = (chave: keyof Hospital) => ({
+    value: editando ? String(dados[chave] ?? '') : String(hospital?.[chave] ?? ''),
+    disabled: !editando,
+    onChangeText: (text: string) => atualizarCampo(chave, text),
+  })
 
   if (!isCadastro && !hospital) return <Text>Carregando...</Text>
 
   return (
-    <ScrollView>
-      <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Text>Voltar</Text>
-      </TouchableOpacity>
+    <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scroll}>
+        <View style={styles.backButton}>
+          <BackButton onPress={() => navigation.goBack()} />
+        </View>
 
-      {CAMPOS.map(campo => (
-        <Input
-          key={campo.chave}
-          placeholder={campo.placeholder}
-          value={editando ? dados[campo.chave] || '' : hospital?.[campo.chave] || ''}
-          disabled={!editando}
-          onChangeText={text => atualizarCampo(campo.chave, text)}
-        />
-      ))}
+        <Text style={styles.sectionTitle}>Dados do Hospital</Text>
 
-      {TIPOS_SANGUE.map(tipo => (
-        <Input
-          key={tipo}
-          placeholder={`Estoque ${tipo}`}
-          value={editando ? String(dados.bloodStock?.[tipo] ?? '') : String(hospital?.bloodStock?.[tipo] ?? '')}
-          disabled={!editando}
-          onChangeText={text => atualizarSangue(tipo, text)}
-        />
-      ))}
+        <Input label="Nome" placeholder="Nome" {...inputProps('name')} />
 
-      {editando ? (
-        <TouchableOpacity onPress={handleSalvar}>
-          <Text>{isCadastro ? 'Criar' : 'Salvar'}</Text>
-        </TouchableOpacity>
-      ) : (
-        <>
-          <TouchableOpacity onPress={() => setEditando(true)}>
-            <Text>Editar</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={handleExcluir} style={{marginBottom:40}}>
-            <Text>Excluir</Text>
-          </TouchableOpacity>
-        </>
-      )}
-    </ScrollView>
+        <View style={styles.row}>
+          <View style={styles.half}>
+            <Input label="CNPJ" placeholder="CNPJ" keyboardType="numeric" maxLength={18} value={formatCNPJ(editando ? (dados.cnpj || '') : (hospital?.cnpj || ''))} disabled={!editando} onChangeText={t => atualizarCampo('cnpj', apenasNumeros(t))} />
+          </View>
+          <View style={styles.half}>
+            <Input label="CEP" placeholder="CEP" keyboardType="numeric" maxLength={9} value={formatCEP(editando ? (dados.cep || '') : (hospital?.cep || ''))} disabled={!editando} onChangeText={t => atualizarCampo('cep', apenasNumeros(t))} />
+          </View>
+        </View>
+
+        <Input label="Endereço" placeholder="Endereço" {...inputProps('address')} />
+
+        <View style={styles.row}>
+          <View style={styles.half}>
+            <Input label="Cidade" placeholder="Cidade" {...inputProps('city')} />
+          </View>
+          <View style={styles.half}>
+            {editando ? (
+              <>
+                <Text >Estado</Text>
+                <TouchableOpacity
+                  style={styles.dropdown}
+                  onPress={() => setShowUfModal(true)}
+                >
+                  <Text
+                    style={
+                      dados.state
+                        ? styles.dropdownText
+                        : styles.dropdownPlaceholder}
+                  >
+                    {dados.state || 'Estado'}
+                  </Text>
+                </TouchableOpacity>
+                <Modal visible={showUfModal} transparent animationType="fade">
+                  <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={() => setShowUfModal(false)}>
+                    <View style={styles.modalContent}>
+                      <Text style={styles.modalTitle}>Selecione o Estado</Text>
+                      <FlatList
+                        data={UF_LIST}
+                        keyExtractor={item => item}
+                        renderItem={({ item }) => (
+                          <TouchableOpacity
+                            style={styles.modalItem}
+                            onPress={() => {
+                              atualizarCampo('state', item)
+                              setShowUfModal(false)
+                            }}
+                          >
+                            <Text style={styles.modalItemText}>{item}</Text>
+                          </TouchableOpacity>
+                        )}
+                      />
+                    </View>
+                  </TouchableOpacity>
+                </Modal>
+              </>
+            ) : (
+              <Input label="Estado" placeholder="Estado" {...inputProps('state')} disabled />
+            )}
+          </View>
+        </View>
+
+        <View style={styles.row}>
+          <View style={styles.half}>
+            <Input label="Telefone" placeholder="Telefone" keyboardType="phone-pad" maxLength={15} value={formatPhone(editando ? (dados.phone || '') : (hospital?.phone || ''))} disabled={!editando} onChangeText={t => atualizarCampo('phone', apenasNumeros(t))} />
+          </View>
+          <View style={styles.half}>
+            <Input label="Email" placeholder="Email" keyboardType="email-address" {...inputProps('email')} />
+          </View>
+        </View>
+
+        <Input label="Website" placeholder="Website" {...inputProps('website')} />
+        <Input label="Horário de funcionamento" placeholder="Horário de funcionamento" {...inputProps('openingHours')} />
+        <Input label="URL da imagem" placeholder="URL da imagem" {...inputProps('image')} />
+
+        <Text style={styles.sectionTitle}>Estoque de Sangue</Text>
+        <View style={styles.bloodGrid}>
+          {TIPOS_SANGUE.map(tipo => (
+            <View key={tipo} style={styles.bloodInput}>
+              <Input
+                placeholder={tipo}
+                keyboardType="numeric"
+                maxLength={3}
+                value={editando ? String(dados.bloodStock?.[tipo] ?? '') : String(hospital?.bloodStock?.[tipo] ?? '')}
+                disabled={!editando}
+                onChangeText={text => atualizarSangue(tipo, text)}
+              />
+            </View>
+          ))}
+        </View>
+
+        <View style={styles.buttonRow}>
+          {editando ? (
+            <>
+              <View style={{ flex: 1 }}>
+                <Button texto={isCadastro ? 'Criar' : 'Salvar'} onPress={handleSalvar} bg={theme.colors.primary} color="#fff" disabled={!isFormValid()} />
+              </View>
+              {!isCadastro && (
+                <View style={{ flex: 1 }}>
+                  <Button texto="Cancelar" onPress={() => { setEditando(false); setDados(hospital || {}) }} bg="#fff" color={theme.colors.secondary} borderColor={theme.colors.border} />
+                </View>
+              )}
+            </>
+          ) : (
+            <>
+              <View style={{ flex: 1 }}>
+                <Button texto="Editar" onPress={() => setEditando(true)} bg={theme.colors.primary} color="#fff" />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Button texto="Excluir" onPress={handleExcluir} bg="#fff" color={theme.colors.status.danger} borderColor={theme.colors.status.danger} />
+              </View>
+            </>
+          )}
+        </View>
+      </ScrollView>
+    </View>
   )
 }

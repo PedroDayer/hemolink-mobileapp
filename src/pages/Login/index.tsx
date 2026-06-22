@@ -2,22 +2,25 @@ import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useNavigation } from '@react-navigation/native'; 
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { TouchableOpacity, ActivityIndicator } from 'react-native'; 
 
 import { Input } from '../../components/Input';
-import { AuthFormWrapper } from '../../components/AuthFormWrapper'; 
+import { AuthFormWrapper } from '../../components/AuthFormWrapper';
+import { ParametrosRotasAuth } from '../../routers/navigation';
 
-import Toast from 'react-native-toast-message'; 
-import { useAuth } from '../../contexts/AuthContext'; 
+import Toast from 'react-native-toast-message';
+import { useAuth } from '../../contexts/AuthContext';
 
-import { 
-  ErrorText, 
-  PasswordContainer, 
-  ToggleButton, 
-  EyeIcon, 
+import {
+  ErrorText,
+  PasswordContainer,
+  ToggleButton,
+  EyeIcon,
   SignUpContainer,
   SignUpText,
-  SignUpBoldText
+  SignUpBoldText, 
 } from './styles';
 
 const loginSchema = z.object({
@@ -29,28 +32,31 @@ type LoginFormData = z.infer<typeof loginSchema>;
 
 export function Login() {
   const [loading, setLoading] = useState(false);
-  const [secureMode, setSecureMode] = useState(true); 
-  
-  const navigation = useNavigation<any>(); 
-  const { signIn } = useAuth(); 
+  const [secureMode, setSecureMode] = useState(true);
+
+  type NavegacaoProps = NativeStackNavigationProp<ParametrosRotasAuth>;
+  const navigation = useNavigation<NavegacaoProps>();
+  const { signIn} = useAuth();
 
   const { control, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: { email: '', password: '' },
   });
 
+  // Login tradicional com E-mail e Senha
   async function handleLogin(data: LoginFormData) {
-    if (loading) return;
+    if (loading ) return;
     try {
       setLoading(true);
       await signIn({ email: data.email, senha: data.password });
+      
       Toast.show({
         type: 'success',
         text1: 'Sucesso',
-        text2: 'Bem-vindo ao HemoLink !',
+        text2: 'Bem-vindo ao HemoLink!',
       });
-    } catch (error) {
-      console.error(error);
+
+    } catch{
       Toast.show({
         type: 'error',
         text1: 'Falha na autenticação',
@@ -62,7 +68,7 @@ export function Login() {
   }
 
   function handleNavigateToRegister() {
-    navigation.navigate('Cadastro'); 
+    navigation.navigate('Cadastro');
   }
 
   return (
@@ -73,14 +79,14 @@ export function Login() {
       isLoading={loading}
       onSubmit={handleSubmit(handleLogin)}
       footer={
-        <SignUpContainer>
-          <SignUpText>
-            Não tem uma conta?{' '}
-            <SignUpBoldText onPress={handleNavigateToRegister}>
-              Cadastre-se
-            </SignUpBoldText>
-          </SignUpText>
-        </SignUpContainer>
+        <>
+          <SignUpContainer>
+            <SignUpText>Não tem uma conta? </SignUpText>
+            <TouchableOpacity onPress={handleNavigateToRegister} activeOpacity={0.7}>
+              <SignUpBoldText>Cadastre-se</SignUpBoldText>
+            </TouchableOpacity>
+          </SignUpContainer>
+        </>
       }
     >
       <Controller
@@ -90,7 +96,7 @@ export function Login() {
           <>
             <Input
               placeholder="E-mail"
-              onChangeText={onChange}
+              onChangeText={(text) => onChange(text.toLowerCase().trim())}
               value={value || ''}
               hasError={!!errors.email}
             />
@@ -107,7 +113,7 @@ export function Login() {
             <PasswordContainer>
               <Input
                 placeholder="Senha"
-                secureTextEntry={secureMode} 
+                secureTextEntry={secureMode}
                 onChangeText={onChange}
                 value={value || ''}
                 hasError={!!errors.password}

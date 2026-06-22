@@ -6,16 +6,19 @@ export interface SignInData {
 export interface User {
     id: string;
     nome: string;
+    cpf: string;
+    tipoSanguineo: string
     email: string;
     tipo: 'doador' | 'admin';
     token?: string;
+    telefone?: string
 }
 export async function signInRequest(data: SignInData): Promise<User> {
     try {
-        const response = await api.get('/user', {
+        const response = await api.get<User[]>('/user', {
             params: { email: data.email, senha: data.senha },
         });
-        const users: User[] = response.data;
+        const users = response.data;
         if (users.length === 0) {
             throw new Error('Usuário não encontrado');
         }

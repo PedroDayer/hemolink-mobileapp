@@ -3,15 +3,13 @@ import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigation } from '@react-navigation/native';
+import { TouchableOpacity, ActivityIndicator } from 'react-native'; 
 
 import { Input } from '../../../components/Input';
 import { AuthFormWrapper } from '../../../components/AuthFormWrapper';
 
 import Toast from 'react-native-toast-message';
 import { useAuth } from '../../../contexts/AuthContext';
-
-
-import { FontAwesome5 } from '@expo/vector-icons'; // APAGAR ANTES DA PRODUCAO
 
 import {
   ErrorText,
@@ -20,10 +18,11 @@ import {
   EyeIcon,
   SignUpContainer,
   SignUpText,
-  SignUpBoldText
+  SignUpBoldText, 
+  GoogleButton,
+  GoogleButtonText,
+  GoogleIcon,
 } from './style';
-import { TouchableOpacity, View } from 'react-native';
-import { Text } from 'react-native';
 
 const loginSchema = z.object({
   email: z.string().min(1, 'O e-mail é obrigatório.').email({ message: 'Insira um e-mail válido.' }),
@@ -34,10 +33,11 @@ type LoginFormData = z.infer<typeof loginSchema>;
 
 export function Login() {
   const [loading, setLoading] = useState(false);
+  const [loadingGoogle, setLoadingGoogle] = useState(false);
   const [secureMode, setSecureMode] = useState(true);
 
   const navigation = useNavigation<any>();
-  const { signIn } = useAuth();
+  const { signIn, signInWithGoogle } = useAuth();
 
   const { control, handleSubmit, formState: { errors } } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
@@ -45,16 +45,18 @@ export function Login() {
   });
 
   async function handleLogin(data: LoginFormData) {
-    if (loading) return;
+    if (loading || loadingGoogle) return;
     try {
       setLoading(true);
       await signIn({ email: data.email, senha: data.password });
-      navigation.navigate('StackHome')
+      
       Toast.show({
         type: 'success',
         text1: 'Sucesso',
-        text2: 'Bem-vindo ao HemoLink !',
+        text2: 'Bem-vindo ao HemoLink!',
       });
+
+      navigation.navigate('StackHome');
     } catch (error) {
       console.error(error);
       Toast.show({
@@ -67,28 +69,67 @@ export function Login() {
     }
   }
 
+  async function handleGoogleLogin() {
+    if (loading || loadingGoogle) return;
+    try {
+      setLoadingGoogle(true);
+      await signInWithGoogle();
+      
+      Toast.show({
+        type: 'success',
+        text1: 'Sucesso',
+        text2: 'Bem-vindo ao HemoLink!',
+      });
+
+      navigation.navigate('StackHome');
+    } catch (error) {
+      console.error(error);
+      Toast.show({
+        type: 'error',
+        text1: 'Falha no Login Social',
+        text2: 'Não foi possível autenticar com a conta Google.',
+      });
+    } finally {
+      setLoadingGoogle(false);
+    }
+  }
+
   function handleNavigateToRegister() {
-    navigation.navigate('Cadastro');
+    navigation.navigate('StackCadastro');
   }
 
   return (
-
-
     <AuthFormWrapper
       title="HemoLink"
       subtitle="Conectando doadores a vidas"
       buttonText="Entrar"
-      isLoading={loading}
+      isLoading={loading || loadingGoogle}
       onSubmit={handleSubmit(handleLogin)}
       footer={
-        <SignUpContainer>
-          <SignUpText>
-            Não tem uma conta?{' '}
-            <SignUpBoldText onPress={handleNavigateToRegister}>
-              Cadastre-se
-            </SignUpBoldText>
-          </SignUpText>
-        </SignUpContainer>
+        <>
+          
+          <GoogleButton
+            activeOpacity={0.8}
+            disabled={loading || loadingGoogle}
+            onPress={handleGoogleLogin}
+          >
+            {loadingGoogle ? (
+              <ActivityIndicator color='#DB4437' size="small" />
+            ) : (
+              <>
+                <GoogleIcon />
+                <GoogleButtonText>Entrar com o Google</GoogleButtonText>
+              </>
+            )}
+          </GoogleButton>
+
+          <SignUpContainer>
+            <SignUpText>Não tem uma conta? </SignUpText>
+            <TouchableOpacity onPress={handleNavigateToRegister} activeOpacity={0.7}>
+              <SignUpBoldText>Cadastre-se</SignUpBoldText>
+            </TouchableOpacity>
+          </SignUpContainer>
+        </>
       }
     >
       <Controller
@@ -98,7 +139,7 @@ export function Login() {
           <>
             <Input
               placeholder="E-mail"
-              onChangeText={onChange}
+              onChangeText={(text) => onChange(text.toLowerCase().trim())}
               value={value || ''}
               hasError={!!errors.email}
             />
@@ -128,16 +169,6 @@ export function Login() {
           </>
         )}
       />
-      <TouchableOpacity
-        style={{ backgroundColor: 'red',flexDirection:'row', paddingVertical:10, alignItems:'center', justifyContent:'center' }}
-        onPress={() => navigation.navigate('StackHome')}>
-        <FontAwesome5 name='skull-crossbones' size={20} color='white' />
-        <Text style={{ color: 'white',  }}>
-          Botao Bandido
-        </Text>
-      </TouchableOpacity>
     </AuthFormWrapper>
-
-
   );
 }
