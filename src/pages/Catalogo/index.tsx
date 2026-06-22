@@ -76,7 +76,7 @@ export const Catalogo = () => {
           text2: "Não foi possível atualizar a lista.",
         });
       }
-    } catch (error) {
+    } catch {
       Toast.show({
         type: "error",
         text1: "Falha na atualização",
