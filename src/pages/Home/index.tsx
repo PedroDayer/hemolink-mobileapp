@@ -18,7 +18,9 @@ import { BotaoAtalho } from "../../components/BotaoAtalho";
 import Toast from 'react-native-toast-message';
 import { Animated, Easing } from "react-native";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useRef, useCallback, useState, useEffect } from "react";
+import { ParametrosRotasApp } from "../../routers/navigation";
 import { ModalDoacao } from "../../components/ModalDoacao";
 import { useNotifications } from "../../hooks/useNotification";
 import { enviarNotificacaoBoasVindas } from "../../services/notifications";
@@ -27,16 +29,20 @@ import { useAuth } from "../../contexts/AuthContext";
 import { limparBloqueios } from '../../util/bloqueioEnvio';
 import { ModalAgendarDoacao } from "../../components/ModalAgendarDoacao";
 
+
+
+type NavegacaoProps = NativeStackNavigationProp<ParametrosRotasApp>;
 export const Home = () => {
   const { user } = useAuth();
-  const navigation = useNavigation<any>();
+  type NavegacaoProps = NativeStackNavigationProp<ParametrosRotasApp>;
+  const navigation = useNavigation<NavegacaoProps>();
   const nome = user?.nome ?? "Doardor";
 
   useNotifications(5, enviarNotificacaoBoasVindas);
   const [modalVisivel, setModalVisivel] = useState(false);
   const [modalAgendarVisivel, setModalAgendarVisivel] = useState(false);
 
-  const rotacao = useRef(new Animated.Value(0)).current;
+  const rotacao = useRef<Animated.Value>(new Animated.Value(0)).current;
 
   const animarMao = useCallback(() => {
     rotacao.setValue(0);
