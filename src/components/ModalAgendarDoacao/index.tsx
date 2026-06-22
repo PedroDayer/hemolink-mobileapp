@@ -8,6 +8,8 @@ import {
   ScrollView,
   ActivityIndicator,
   Platform,
+  Alert,
+  Linking,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -30,6 +32,31 @@ interface Props {
 }
 
 const HORARIOS = ['10:00', '12:00', '14:00', '16:00'];
+
+const abrirGoogleCalendar = (
+  hospitalNome: string,
+  dataEvento: Date
+) => {
+  const inicio = dataEvento
+    .toISOString()
+    .replace(/[-:]/g, '')
+    .replace(/\.\d{3}Z$/, 'Z');
+
+  const fim = new Date(dataEvento.getTime() + 60 * 60 * 1000)
+    .toISOString()
+    .replace(/[-:]/g, '')
+    .replace(/\.\d{3}Z$/, 'Z');
+
+  const url =
+    `https://calendar.google.com/calendar/render?action=TEMPLATE` +
+    `&text=${encodeURIComponent('Doação de Sangue')}` +
+    `&details=${encodeURIComponent(
+      `Doação agendada em ${hospitalNome}`
+    )}` +
+    `&dates=${inicio}/${fim}`;
+
+  Linking.openURL(url);
+};
 
 export const ModalAgendarDoacao = ({ visible, onClose, hospitalId, hospitalNome }: Props) => {
   const { user } = useAuth();
@@ -107,9 +134,38 @@ export const ModalAgendarDoacao = ({ visible, onClose, hospitalId, hospitalNome 
       });
 
       await marcarComoEnviado(user.cpf, 'doacao');
-      Toast.show({ type: 'success', text1: 'Doação agendada!', text2: `${dataFormatada} às ${horarioSelecionado}` });
-      setHorarioSelecionado(null);
-      onClose();
+      Toast.show({
+        type: 'success',
+        text1: 'Doação agendada!',
+        text2: `${dataFormatada} às ${horarioSelecionado}`,
+      });
+
+      const nomeHospital =
+        hospitalNome ||
+        hospitais.find(h => h.id === idFinal)?.name ||
+        'Unidade de Saúde';
+
+      Alert.alert(
+        'Adicionar ao calendário',
+        'Deseja adicionar este agendamento ao Google Calendar?',
+        [
+         {
+            text: 'Não',
+            onPress: () => {
+             setHorarioSelecionado(null);
+              onClose();
+            },
+          },
+          {
+            text: 'Sim',
+            onPress: () => {
+              abrirGoogleCalendar(nomeHospital, dataAgendamento);
+              setHorarioSelecionado(null);
+              onClose();
+            },
+          },
+        ]
+      );
     } catch {
       Toast.show({ type: 'error', text1: 'Erro ao agendar', text2: 'Tente novamente.' });
     } finally {
