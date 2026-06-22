@@ -303,7 +303,7 @@ export const Home = () => {
             />
           </View>
         </View>
-        <View style={{ marginTop: 50 }}></View>
+        <View style={{ marginTop: 100 }}></View>
       </ScrollView>
     </View>
   );
