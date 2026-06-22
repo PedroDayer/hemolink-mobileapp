@@ -7,6 +7,7 @@ export type ParametrosRotasApp = {
   AppHome: undefined;
   DetalheHospital: { id: string };
   CadastroHospital: { id?: string };
+  VisualizarHospital: { id: string }
 };
 
 export type ParametrosRotasTabs = {
@@ -17,10 +18,7 @@ export type ParametrosRotasTabs = {
 };
 
 export type ParametrosRotasDrawer = {
-  DrawerHome: undefined;
-  DrawerPerfil: undefined;
-  DrawerCatalogo: undefined;
-  DrawerLojaPontos: undefined;
+  DrawerHome: { screen: keyof ParametrosRotasTabs } | undefined;
 };
 
 declare global {

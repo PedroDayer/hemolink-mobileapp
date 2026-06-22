@@ -141,4 +141,67 @@ export const styles = StyleSheet.create({
         color: theme.colors.textTitle,
         lineHeight: 18,
     },
+    cardAcao: {
+        backgroundColor: '#fff',
+        borderRadius: 12,
+        padding: 16,
+        width: 130,
+        alignItems: 'center',
+        gap: 8,
+        shadowColor: '#000',
+        shadowOpacity: 0.05,
+        shadowRadius: 4,
+        elevation: 2,
+    },
+    cardAcaoTexto: {
+        fontSize: 13,
+        fontWeight: '500',
+        textAlign: 'center',
+        color: '#333',
+    },
+    modalFundo: {
+        flex: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        justifyContent: 'flex-end',
+    },
+    modalCaixa: {
+        backgroundColor: '#fff',
+        padding: 20,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        gap: 10,
+    },
+    modalTitulo: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        marginBottom: 8,
+    },
+    modalLabel: {
+        marginBottom: 4,
+        fontWeight: '500',
+    },
+    tela: {
+        flex: 1,
+    },
+    scrollConteudo: {
+        paddingBottom: 100,
+    },
+    botaoLogout: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 8,
+        marginTop: 20,
+    },
+    textoLogout: {
+        color: theme.colors.primary,
+        fontSize: 16,
+        fontWeight: '600',
+    },
+    listaAcoes: {
+        paddingHorizontal: 16,
+        paddingVertical: 12,
+        gap: 12,
+    },
 });
