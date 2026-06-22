@@ -86,6 +86,7 @@ function handleSalvar() {
 }
 
   function handleExcluir() {
+    if (!id) return
     Alert.alert('Excluir hospital', 'Tem certeza que deseja excluir este hospital?', [
       { text: 'Cancelar', style: 'cancel' },
       {
@@ -223,12 +224,12 @@ function handleSalvar() {
               <Text>
                 {tipo}
               </Text>
-              <View style={{position:'relative', height:40}}>
+              <View style={{position:'relative', height:60}}>
                 <Input
                   placeholder={tipo}
                   keyboardType="numeric"
                   maxLength={3}
-                  value={editando ? String(dados.bloodStock?.[tipo] ?? '') : String(hospital?.bloodStock?.[tipo] ?? '')}
+                  value={editando ? String(dados.bloodStock?.[`${tipo}`] ?? '') : String(hospital?.bloodStock?.[tipo] ?? '')}
                   disabled={!editando}
                   onChangeText={text => atualizarSangue(tipo, text)}
 

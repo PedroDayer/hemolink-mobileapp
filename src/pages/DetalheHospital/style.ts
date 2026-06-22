@@ -90,7 +90,7 @@ export const styles = StyleSheet.create({
   },
   percent:{
     position:'absolute', 
-    bottom:8,
+    bottom:28,
     right:10,
     color:`${theme.colors.textBase}`
   }
