@@ -1,9 +1,4 @@
-import {
-  FlatList,
-  Text,
-  View,
-  TouchableOpacity,
-} from "react-native";
+import { FlatList, Text, View, TouchableOpacity } from "react-native";
 import { styles } from "./style";
 import { Input } from "../../components/Input";
 import EvilIcons from "@expo/vector-icons/EvilIcons";
@@ -32,6 +27,7 @@ export const Catalogo = () => {
   const [isDados, setIsDados] = useState<boolean>(false);
   const [filter, setFilter] = useState("");
   const [filtroSelecionado, setFiltroSelecionado] = useState<string>("1");
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const botoesFiltros = [
     { id: "1", nome: "Todos" },
@@ -42,7 +38,6 @@ export const Catalogo = () => {
 
   async function carregarInformacoes() {
     setIsLoading(true);
-
     try {
       const response = await listarHospitais();
       if (response.status !== 200) {
@@ -54,18 +49,41 @@ export const Catalogo = () => {
         });
         return;
       }
-      setTimeout(() => {
-        setHospitais(response.data);
-        setIsLoading(false);
-        setIsDados(true);
-      }, 0);
+      setHospitais(response.data);
+      setIsDados(true);
     } catch (error) {
-      setIsLoading(false);
       Toast.show({
         type: "error",
         text1: "Falha na conexão",
         text2: "Verifique sua internet ou tente novamente mais tarde.",
       });
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  async function handleRefresh() {
+    setIsRefreshing(true);
+    try {
+      const response = await listarHospitais();
+      if (response.status === 200) {
+        setHospitais(response.data);
+        setIsDados(true);
+      } else {
+        Toast.show({
+          type: "error",
+          text1: "Erro ao atualizar",
+          text2: "Não foi possível atualizar a lista.",
+        });
+      }
+    } catch (error) {
+      Toast.show({
+        type: "error",
+        text1: "Falha na atualização",
+        text2: "Não foi possível conectar ao servidor.",
+      });
+    } finally {
+      setIsRefreshing(false);
     }
   }
 
@@ -134,7 +152,7 @@ export const Catalogo = () => {
     </View>
   );
 
-  return (
+ return (
     <View style={styles.containerMain}>
       {isLoading ? (
         <View style={styles.loadingContainer}>
@@ -147,6 +165,8 @@ export const Catalogo = () => {
           data={hospitaisFiltrados}
           showsVerticalScrollIndicator={false}
           ListHeaderComponent={renderHeader()}
+          refreshing={isRefreshing}
+          onRefresh={handleRefresh}
           contentContainerStyle={{
             paddingBottom: 20,
             gap: 12,
@@ -156,9 +176,13 @@ export const Catalogo = () => {
             const { percentage } = obterBloodStock(item.bloodStock);
             const tipoCritico = obterTiposSanguineosCriticos(item.bloodStock);
             return (
-              <TouchableOpacity 
+              <TouchableOpacity
                 style={styles.containerCard}
-                onPress={() => navigation.navigate("VisualizarHospital", { id: String(item.id) })}
+                onPress={() =>
+                  navigation.navigate("VisualizarHospital", {
+                    id: String(item.id),
+                  })
+                }
                 activeOpacity={0.8}
               >
                 <CardBaseCatalogo
