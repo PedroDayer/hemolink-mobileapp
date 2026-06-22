@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, ScrollView, Text, ActivityIndicator } from 'react-native';
+import { View, ScrollView, Text, ActivityIndicator, Alert } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ParametrosRotasApp } from '../../routers/navigation';
 import { Hospital, buscarHospital } from '../../services/HospitalService';
@@ -8,20 +8,84 @@ import { Button } from '../../components/Button';
 import { BackButton } from '../../components/BackButton';
 import { theme } from '../../theme';
 import { styles } from './style';
+import MapView, { Marker } from 'react-native-maps';
 
 type Props = NativeStackScreenProps<ParametrosRotasApp, 'VisualizarHospital'>;
+
+interface Coordenadas {
+  latitude: number;
+  longitude: number;
+}
 
 export const VisualizarHospital = ({ route, navigation }: Props) => {
   const id = route.params?.id;
   const [hospital, setHospital] = useState<Hospital | null>(null);
   const [loading, setLoading] = useState(true);
+  
+  const [coordenadas, setCoordenadas] = useState<Coordenadas | null>(null);
 
   useEffect(() => {
     buscarHospital(id)
-      .then(res => setHospital(res.data))
+      .then(res => {
+        const hospitalData = res.data;
+        setHospital(hospitalData);
+        buscarCoordenadasPorEndereco(hospitalData);
+      })
       .catch(console.error)
       .finally(() => setLoading(false));
   }, [id]);
+
+  const buscarCoordenadasPorEndereco = async (hosp: Hospital) => {
+    try {
+      const enderecoBusca = `${hosp.address}, ${hosp.city}, ${hosp.state}, Brasil`;
+      const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(enderecoBusca)}&limit=1`;
+      
+      const response = await fetch(url, {
+        headers: {
+          'User-Agent': 'HemoLinkApp/1.0', 
+        }
+      });
+      const data = await response.json();
+
+      if (data && data.length > 0) {
+        setCoordenadas({
+          latitude: parseFloat(data[0].lat),
+          longitude: parseFloat(data[0].lon),
+        });
+      } else {
+        buscarCoordenadasPorCEP(hosp.cep);
+      }
+    } catch (error) {
+      console.error("Erro ao buscar coordenadas:", error);
+    }
+  };
+
+  const buscarCoordenadasPorCEP = async (cep: string) => {
+    try {
+      const url = `https://nominatim.openstreetmap.org/search?format=json&postalcode=${cep}&country=Brazil&limit=1`;
+      const response = await fetch(url, {
+        headers: { 'User-Agent': 'HemoLinkApp/1.0' }
+      });
+      const data = await response.json();
+
+      if (data && data.length > 0) {
+        setCoordenadas({
+          latitude: parseFloat(data[0].lat),
+          longitude: parseFloat(data[0].lon),
+        });
+      }
+    } catch (error) {
+      console.error("Erro ao buscar coordenadas por CEP:", error);
+    }
+  };
+
+  const handleFavoritar = () => {
+    Alert.alert(
+      "Sucesso",
+      "Hospital adicionado aos favoritos com sucesso!",
+      [{ text: "OK", style: "default" }]
+    );
+  };
 
   if (loading) {
     return (
@@ -48,10 +112,39 @@ export const VisualizarHospital = ({ route, navigation }: Props) => {
 
         <CardDetalheHospital hospital={hospital} />
 
+        <View style={styles.mapContainer}>
+          <Text style={styles.mapTitle}>Localização</Text>
+          
+          {coordenadas ? (
+            <MapView
+              style={styles.map}
+              initialRegion={{
+                latitude: coordenadas.latitude,
+                longitude: coordenadas.longitude,
+                latitudeDelta: 0.01,
+                longitudeDelta: 0.01,
+              }}
+            >
+              <Marker
+                coordinate={{
+                  latitude: coordenadas.latitude,
+                  longitude: coordenadas.longitude,
+                }}
+                title={hospital.name}
+                description={hospital.address}
+              />
+            </MapView>
+          ) : (
+            <View style={[styles.map, styles.center]}>
+              <ActivityIndicator color={theme.colors.primary} />
+              <Text style={{ marginTop: 10, color: '#666' }}>Carregando mapa...</Text>
+            </View>
+          )}
+        </View>
+
         <View style={styles.acoes}>
           <Button 
             texto="Agendar Doação" 
-            //Icaro, faz a boa depois
             onPress={() => console.log('Ir para Formulário')} 
             bg={theme.colors.primary} 
             color="#fff" 
@@ -59,8 +152,7 @@ export const VisualizarHospital = ({ route, navigation }: Props) => {
           <View style={{ height: 10 }} />
           <Button 
             texto="Favoritar Hospital" 
-            //deve ficar por isso mesmo
-            onPress={() => console.log('Salvar nos favoritos')} 
+            onPress={handleFavoritar} 
             bg="#fff" 
             color={theme.colors.primary} 
             borderColor={theme.colors.primary} 

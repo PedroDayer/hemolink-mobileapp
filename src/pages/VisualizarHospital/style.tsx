@@ -20,5 +20,23 @@ export const styles = StyleSheet.create({
   },
   backButton:{
     marginBottom: 15,
-  }
+  },
+  mapContainer: {
+    marginBottom: 20,
+    backgroundColor: '#fff',
+    borderRadius: 15,
+    padding: 15,
+    elevation: 3,
+  },
+  mapTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: theme.colors.secondary,
+    marginBottom: 10,
+  },
+  map: {
+    width: '100%',
+    height: 200,
+    borderRadius: 10,
+  },
 });
