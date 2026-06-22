@@ -20,6 +20,7 @@ export type ParametrosRotasDrawer = {
   DrawerHome: undefined;
   DrawerPerfil: undefined;
   DrawerCatalogo: undefined;
+  DrawerLojaPontos: undefined;
 };
 
 declare global {

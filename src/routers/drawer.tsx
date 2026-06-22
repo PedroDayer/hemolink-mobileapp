@@ -10,6 +10,7 @@ import { Feather } from "@expo/vector-icons";
 import { Perfil } from "../pages/Perfil";
 import { Catalogo } from "../pages/Catalogo";
 import { ParametrosRotasDrawer } from "./navigation";
+import { LojaDePontos } from "../pages/LojaDePontos";
 
 const Drawer = createDrawerNavigator<ParametrosRotasDrawer>();
 
@@ -63,6 +64,17 @@ export const DrawerRouters = () => {
           ),
           drawerLabel: "Catalogo",
           title: "Catalogo",
+        }}
+      />
+      <Drawer.Screen
+        name="DrawerLojaPontos"
+        component={LojaDePontos}
+        options={{
+          drawerIcon: ({ color, size }) => (
+            <Feather name="list" color={color} size={size} />
+          ),
+          drawerLabel: "Loja de Pontos",
+          title: "Loja de Pontos",
         }}
       />
     </Drawer.Navigator>
