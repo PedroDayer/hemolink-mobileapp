@@ -17,7 +17,9 @@
 
 </div>
 
-![hemoLinkHero.gif](assets/hemoLinkHero.gif)
+<div align="center">
+  <img src="assets/hemoLinkHero.gif" width="30%" />
+</div>
 
 ---
 
