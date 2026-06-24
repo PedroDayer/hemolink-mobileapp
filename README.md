@@ -17,6 +17,10 @@
 
 </div>
 
+<div align="center">
+  <img src="assets/hemoLinkHero.gif" width="20%" />
+</div>
+
 ---
 
 ## 📋 Sumário
@@ -32,6 +36,7 @@
 - [Notificações Push](#-notificações-push)
 - [Navegação](#-navegação)
 - [Como Contribuir](#-como-contribuir)
+- [Equipe](#-equipe-desenvolvedora-gr5)
 
 ---
 
@@ -407,6 +412,23 @@ Contribuições são bem-vindas! Siga o fluxo abaixo:
 | `refactor:` | Refatoração de código |
 | `docs:` | Atualização de documentação |
 | `chore:` | Tarefas de manutenção |
+
+---
+
+## 👥 Equipe Desenvolvedora (GR5)
+Projeto desenvolvido colaborativamente pelo Grupo 5:
+
+Pedro Augusto Bastos Dayer
+
+Icaro de Assis Pinheiro
+
+Guilherme Fernandes Guingo
+
+Nícolas de Carvalho Oliveira
+
+João Victor do Nascimento Salgueiro
+
+Luiz Felipe Vieira de Oliveira Ribeiro
 
 ---
 
